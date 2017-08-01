@@ -1,11 +1,10 @@
 {
     "name": "webpack-typescript-builder",
-    "version": "1.0.0",
+    "version": "1.0.0-rc6",
     "description": "Webpack config builder for typescript, styles (css and sass), fonts, images and icons.",
     "main": "dist/index.js",
     "typings": "dist/index.d.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
+    "scripts": {        
         "build": "tsc"
     },
     "keywords": [

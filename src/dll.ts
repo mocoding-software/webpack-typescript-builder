@@ -2,13 +2,10 @@ import * as webpack from 'webpack';
 import * as path from "path";
 
 export class Dll {
-    metadataPath: string;
-
-    /**
-     *
-     */
+    private metadataPath: string;
+    
     constructor(private dllName: string, private sourceType: string, tempDir: string) {
-        this.metadataPath = path.join(tempDir, name + "." + sourceType + "-dll.json");
+        this.metadataPath = path.join(tempDir, dllName + "." + sourceType + "-dll.json");
     }
 
     produce(): webpack.DllPlugin {
@@ -23,7 +20,7 @@ export class Dll {
         return new webpack.DllReferencePlugin({
             context: __dirname,
             manifest: require(this.metadataPath),
-            name: this.sourceType === "umd" ? name : "./" + name,
+            name: this.sourceType === "umd" ? this.dllName : "./" + this.dllName,
             sourceType: this.sourceType
         });
     }

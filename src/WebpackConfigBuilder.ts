@@ -6,49 +6,41 @@ import { asUmdLib, asServerLib } from "./outputs";
 import { defaultClientRules, defaultServerRules } from "./rules";
 
 export class WebpackConfigBuilder {
-    private _config: webpack.Configuration;
-    constructor(entry: webpack.Entry) {
+    defaultEntryName: string;    
+    constructor(private entry: webpack.Entry) {
 
         const entryKeys = Object.getOwnPropertyNames(entry);
         if (entryKeys.length === 0)
             throw new Error("Entry should contain at least one key-value pair.")
-        
-        var firstName = entryKeys[0];
 
-        this._config = {
-            stats: { modules: false },
-            entry,
-            resolve: getDefaultResolveSection(),
-            plugins: [...defaultPlugins, new ExtractTextPlugin(firstName + ".css")]
-        }
-
+        this.defaultEntryName = entryKeys[0];        
     }
 
-    toUmdConfig(outputPath: string): webpack.Configuration {
-        var config = this.deepClone(this._config);
+    toUmdConfig(outputPath: string, ...plugins: webpack.Plugin[]): webpack.Configuration {
         return {
-            ...config,
+            stats: { modules: false },
+            entry: this.entry,
+            resolve: getDefaultResolveSection(),
             output: asUmdLib(outputPath),
             module: {
                 loaders: [...defaultClientRules]
             },
+            plugins: [...defaultPlugins, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css")]
         }
     }
 
-    toServerConfig(outputPath: string): webpack.Configuration {
-        var config = this.deepClone(this._config);
+    toServerConfig(outputPath: string, ...plugins: webpack.Plugin[]): webpack.Configuration {
         return {
-            ...config,
+            stats: { modules: false },
+            entry: this.entry,
+            resolve: getDefaultResolveSection(),
             output: asServerLib(outputPath),
             target: "node",
             devtool: 'inline-source-map',
             module: {
                 loaders: [...defaultServerRules]
             },
+            plugins: [...defaultPlugins, ...plugins]
         }
-    }
-
-    deepClone<T>(obj: T): T {
-        return JSON.parse(JSON.stringify(obj));
     }
 }
