@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {			
+		"module": "commonjs",
+		"target": "es6",
+		"noImplicitAny": true,		
+		"moduleResolution": "node",		
+		"declaration": true,
+		"outDir": "dist",		
+		"removeComments": true		
+	},
+	"files": [
+		"src/index.ts"
+	],
+	"exclude": [
+		"node_modules",
+		"examples"
+	]
+}

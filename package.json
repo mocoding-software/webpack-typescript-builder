@@ -1,0 +1,43 @@
+{
+    "name": "webpack-typescript-builder",
+    "version": "1.0.0",
+    "description": "Webpack config builder for typescript, styles (css and sass), fonts, images and icons.",
+    "main": "dist/index.js",
+    "typings": "dist/index.d.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc"
+    },
+    "keywords": [
+        "webpack",
+        "typescript",
+        "saas",
+        "fonts",
+        "image",
+        "icon",
+        "builder",
+        "utils"
+    ],
+    "author": "MOCODING, LLC",
+    "license": "ISC",
+    "dependencies": {
+        "ignore-loader": "0.1.2",
+        "awesome-typescript-loader": "3.2.2",
+        "extract-text-webpack-plugin": "3.0.0",
+        "file-loader": "0.11.2",
+        "style-loader": "0.18.2",
+        "css-loader": "0.28.4",
+        "sass-loader": "6.0.6",
+        "node-sass": "4.5.3",
+        "ts-node": "3.3.0",
+        "typescript": "2.4.2",
+        "url-loader": "0.5.9",
+        "webpack": "3.4.1",
+        "node-noop": "1.0.0"
+    },
+    "devDependencies": {
+        "@types/webpack": "3.0.5",
+        "@types/webpack-env": "1.13.0",
+        "@types/extract-text-webpack-plugin": "2.1.0"
+    }
+}
