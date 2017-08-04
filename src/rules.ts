@@ -7,7 +7,7 @@ const typescript: webpack.Rule = {
     exclude: [/node_modules/]
 }
 
-const scssStyles: webpack.Rule = {
+const sassStyles: webpack.Rule = {
     test: /\.scss$/,
     use: ExtractTextPlugin.extract({
         use: [{
@@ -46,26 +46,34 @@ const fonts: webpack.Rule = {
         loader: 'url-loader',
         options: {
             limit: 4096,
-            name: "fonts/[name].[ext]"
+            name: "fonts/[name].[hash].[ext]"
         }
     }
 }
 
 const ignoreImages: webpack.Rule = { ...images, use: "ignore-loader" };
 const ignoreFonts: webpack.Rule = { ...fonts, use: "ignore-loader" };
-const ignoreScssStyles: webpack.Rule = { ...scssStyles, use: "ignore-loader" };
+const ignoreSassStyles: webpack.Rule = { ...sassStyles, use: "ignore-loader" };
 const ignoreStyles: webpack.Rule = { ...styles, use: "ignore-loader" };
 
 const defaultClientRules = [
-    typescript, images, fonts, styles, scssStyles,
+    typescript, images, fonts, styles, sassStyles,
 ];
 
 const defaultServerRules = [
-    typescript, ignoreFonts, ignoreImages, ignoreStyles, ignoreScssStyles
+    typescript, ignoreFonts, ignoreImages, ignoreStyles, ignoreSassStyles
 ]
 
 export {
     typescript,
+    sassStyles,
+    styles,
+    images,
+    fonts,
+    ignoreSassStyles,
+    ignoreStyles,
+    ignoreImages,
+    ignoreFonts,
     defaultClientRules,
     defaultServerRules
 }
