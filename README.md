@@ -14,7 +14,7 @@ npm install webpack-typescript-builder --save-dev
 
 This will install you the following library (no need to duplicate in your config)
 - [Webpack](https://github.com/webpack/webpack)
-= [Typescript](https://github.com/Microsoft/TypeScript)
+- [Typescript](https://github.com/Microsoft/TypeScript)
 - [Awesome TypeScript Loader](https://github.com/s-panferov/awesome-typescript-loader)
 - [Style Loader](https://github.com/webpack/style-loader)    
 - [CSS Loader](https://github.com/webpack/css-loader)

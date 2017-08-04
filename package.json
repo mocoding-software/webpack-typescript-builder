@@ -1,24 +1,33 @@
 {
     "name": "webpack-typescript-builder",
-    "version": "1.0.0",
-    "description": "Webpack config builder for typescript, styles (css and sass), fonts, images and icons.",
+    "version": "1.0.2",
+    "description": "Webpack config builder for typescript, styles (css and sass), fonts and images.",
     "main": "dist/index.js",
     "typings": "dist/index.d.js",
     "scripts": {
         "build": "tsc",
-        "docts": "docts"
+        "prerelease": "npm run build"
     },
     "keywords": [
         "webpack",
         "typescript",
         "saas",
         "fonts",
-        "image",        
+        "image",
         "builder",
         "utils"
     ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/mocoding-software/webpack-typescript-builder.git"
+    },
+    "bugs": {
+        "url": "https://github.com/mocoding-software/webpack-typescript-builder/issues",
+        "email": "social@mocoding.com"
+    },
+    "homepage": "https://github.com/mocoding-software/webpack-typescript-builder#readme",
     "author": "MOCODING, LLC",
-    "license": "ISC",
+    "license": "MIT",
     "dependencies": {
         "awesome-typescript-loader": "3.2.2",
         "css-loader": "0.28.4",
