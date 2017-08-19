@@ -1,9 +1,20 @@
+<div align="center">
+  <a href="https://github.com/mocoding-software/webpack-typescript-builder">
+    <img src="https://raw.githubusercontent.com/mocoding-software/webpack-typescript-builder/master/icon.png">
+  </a>
+  <br>
+  <br>
+</div>
+
+[![npm][npm-image]][npm-url]
+[![deps][deps]][deps-url]
 # webpack-typescript-builder
+
 Webpack config builder with included rules for typescript, styles (css and sass), fonts and images.
 
 ## About
 Following DRY principle.
-Many webpack controlled web-projects use the same configuration for optimal deployment. This library is aimed to gather all configuration blocks in one place and don't repeat them from project to project.
+Many webpack controlled web-projects use the same configuration for optimal deployment. This library is aimed to gather all configuration blocks in one place and don't repeat them project to project.
 
 ## Installation  
 The library is written in Typescript and compiled to ES6 JS. 
@@ -30,7 +41,7 @@ Library exposes single configuration builder as well as other building blocks to
 
 ### WebpackConfigBuilder
 
-**Quick Start**
+**Usage**
 ```js
 import { WebpackConfigBuilder } from "webpack-typescript-builder";
 
@@ -45,7 +56,7 @@ This will generate webpack configuration that:
 2. Adds images, fonts, style (css and sass) rules
 3. Adds CheckerPlugin and TsConfigPathsPlugin
 
-The final `wwwroot` folder may look as following
+The final `wwwroot` folder will look as following
 
 ```
 /bundle.js
@@ -54,7 +65,7 @@ The final `wwwroot` folder may look as following
 /images/...
 ```
 
-The whole webpack configuration may look as following:
+The whole webpack configuration looks as following:
 ```js
 {
     stats: {
@@ -181,4 +192,10 @@ License
 
 [The MIT License](https://raw.githubusercontent.com/mocoding-software/webpack-typescript-builder/master/LICENSE)
 
-Copyright (c) 2017 MOCODING, LLC
+COPYRIGHT (C) 2017 MOCODING, LLC
+
+[npm-image]: https://img.shields.io/npm/v/webpack-typescript-builder.svg?style=flat-square
+[npm-url]: https://www.npmjs.com/package/webpack-typescript-builder
+
+[deps]: https://img.shields.io/david/mocoding-software/webpack-typescript-builder.svg
+[deps-url]: https://david-dm.org/mocoding-software/webpack-typescript-builder
