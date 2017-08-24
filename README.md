@@ -174,8 +174,8 @@ Rules could be imported as a collection or one by one:
 * fonts
 * ignoreSassStyles
 * ignoreStyles
-* ignoreImages
-* ignoreFonts
+* imagesNoEmit
+* fontsNoEmit
 * defaultClientRules
 * defaultServerRules
 

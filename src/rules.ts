@@ -23,45 +23,51 @@ const sassStyles: webpack.Rule = {
 const styles: webpack.Rule = {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
-        use: 'css-loader?minimize',        
+        use: 'css-loader?minimize',
         // use style-loader in development
         fallback: "style-loader"
     })
 }
 
-const images: webpack.Rule = {
-    test: /\.(png|jpg|gif)$/,
-    use: {
-        loader: 'url-loader',
-        options: {
-            limit: 4096,
-            name: "img/[name].[hash].[ext]"
+function images(emitFile: boolean = true): webpack.Rule {
+    return {
+        test: /\.(png|jpg|gif)$/,
+        use: {
+            loader: 'url-loader',
+            options: {
+                limit: 4096,
+                name: "img/[name].[hash].[ext]",
+                emitFile
+            }
         }
     }
 }
 
-const fonts: webpack.Rule = {
-    test: /\.(eot|ttf|otf|woff|woff2|svg)$/,
-    use: {
-        loader: 'url-loader',
-        options: {
-            limit: 4096,
-            name: "fonts/[name].[hash].[ext]"
+function fonts(emitFile: boolean = true): webpack.Rule {
+    return {
+        test: /\.(eot|ttf|otf|woff|woff2|svg)$/,
+        use: {
+            loader: 'url-loader',
+            options: {
+                limit: 4096,
+                name: "fonts/[name].[hash].[ext]",
+                emitFile
+            }
         }
     }
 }
 
-const ignoreImages: webpack.Rule = { ...images, use: "ignore-loader" };
-const ignoreFonts: webpack.Rule = { ...fonts, use: "ignore-loader" };
+const imagesNoEmit: webpack.Rule = images(false);
+const fontsNoEmit: webpack.Rule = fonts(false);
 const ignoreSassStyles: webpack.Rule = { ...sassStyles, use: "ignore-loader" };
 const ignoreStyles: webpack.Rule = { ...styles, use: "ignore-loader" };
 
 const defaultClientRules = [
-    typescript, images, fonts, styles, sassStyles,
+    typescript, images(), fonts(), styles, sassStyles,
 ];
 
 const defaultServerRules = [
-    typescript, ignoreFonts, ignoreImages, ignoreStyles, ignoreSassStyles
+    typescript, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles
 ]
 
 export {
@@ -72,8 +78,8 @@ export {
     fonts,
     ignoreSassStyles,
     ignoreStyles,
-    ignoreImages,
-    ignoreFonts,
+    imagesNoEmit,
+    fontsNoEmit,
     defaultClientRules,
     defaultServerRules
 }
