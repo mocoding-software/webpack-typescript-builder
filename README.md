@@ -85,7 +85,7 @@ The whole webpack configuration looks as following:
         publicPath: '/'
     },
     module: {
-        loaders: [{
+        rules: [{
                 test: /\.(ts|tsx)?$/,
                 use: "awesome-typescript-loader?silent=true",
                 exclude: [/node_modules/]

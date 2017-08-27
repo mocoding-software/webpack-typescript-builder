@@ -23,7 +23,7 @@ export class WebpackConfigBuilder {
             resolve: getDefaultResolveSection(),
             output: asUmdLib(outputPath),
             module: {
-                loaders: [...defaultClientRules]
+                rules: [...defaultClientRules]
             },
             plugins: [...defaultPlugins, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css")]
         }
@@ -38,7 +38,7 @@ export class WebpackConfigBuilder {
             target: "node",
             devtool: 'inline-source-map',
             module: {
-                loaders: [...defaultServerRules]
+                rules: [...defaultServerRules]
             },
             plugins: [...defaultPlugins, ...plugins]
         }
