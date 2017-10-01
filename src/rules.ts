@@ -7,6 +7,12 @@ const typescript: webpack.Rule = {
     exclude: [/node_modules/]
 }
 
+const tslint: webpack.Rule = {
+    test: /\.(ts|tsx)?$/,
+    use: 'tslint-loader',
+    exclude: [/node_modules/]
+}
+
 const cssHotReloadLoader: webpack.NewLoader = {
     loader: 'css-hot-loader'
 };
@@ -27,6 +33,7 @@ const sassStyles: webpack.Rule = {
 }
 
 const sassGlob: webpack.Rule = {
+    enforce: "pre",
     test: /\.scss$/,
     use: "import-glob",    
 }
@@ -76,15 +83,16 @@ const ignoreSassStyles: webpack.Rule = { ...sassStyles, use: "ignore-loader" };
 const ignoreStyles: webpack.Rule = { ...styles, use: "ignore-loader" };
 
 const defaultClientRules = [
-    typescript, images(), fonts(), styles, sassStyles,
+    typescript, tslint, images(), fonts(), styles, sassStyles, sassGlob
 ];
 
 const defaultServerRules = [
-    typescript, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles
+    typescript, tslint, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles
 ]
 
 export {
     typescript,
+    tslint,
     sassStyles,
     sassGlob,
     styles,

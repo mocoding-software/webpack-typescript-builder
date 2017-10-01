@@ -22,8 +22,7 @@ export class WebpackConfigBuilder {
             entry: this.entry,
             resolve: getDefaultResolveSection(),
             output: asUmdLib(outputPath),
-            module: {
-                preLoaders: [sassGlob],
+            module: {                
                 rules: [...defaultClientRules]
             },
             plugins: [...defaultPlugins, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css")]
@@ -38,8 +37,7 @@ export class WebpackConfigBuilder {
             output: asServerLib(outputPath),
             target: "node",
             devtool: 'source-map',
-            module: {
-                preLoaders: [sassGlob],
+            module: {                
                 rules: [...defaultServerRules]
             },
             plugins: [...defaultPlugins, ...plugins]

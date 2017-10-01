@@ -36,6 +36,7 @@ This will install you the following library (no need to duplicate in your config
 - [Ignore Loader](https://github.com/cherrry/ignore-loader)
 - [Extract Text Plugin](https://github.com/webpack/extract-text-webpack-plugin)
 - [Import Glob](https://github.com/terpiljenya/import-glob)
+- [TSLint Loader](https://github.com/wbuchwalter/tslint-loader)
 
 ## API
 Library exposes single configuration builder as well as other building blocks to use in configuration.
@@ -85,12 +86,16 @@ The whole webpack configuration looks as following:
         libraryTarget: 'umd',
         publicPath: '/'
     },
-    module: {
-        preloaders: [{
-            test: /\.scss$/,
-            use: "import-glob",    
-        }],
+    module: {       
         rules: [{
+                test: /\.(ts|tsx)?$/,
+                use: 'tslint-loader',
+                exclude: [/node_modules/]
+            }, {
+                enforce: "pre",
+                test: /\.scss$/,
+                use: "import-glob",  
+            }, {
                 test: /\.(ts|tsx)?$/,
                 use: "awesome-typescript-loader?silent=true",
                 exclude: [/node_modules/]
@@ -173,6 +178,7 @@ Rules could be imported as a collection or one by one:
 #### Rules List
 
 * typescript
+* tslint
 * sassStyles
 * globSass
 * styles
