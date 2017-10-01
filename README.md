@@ -35,6 +35,7 @@ This will install you the following library (no need to duplicate in your config
 - [Node SASS](https://github.com/sass/node-sass)
 - [Ignore Loader](https://github.com/cherrry/ignore-loader)
 - [Extract Text Plugin](https://github.com/webpack/extract-text-webpack-plugin)
+- [Import Glob](https://github.com/terpiljenya/import-glob)
 
 ## API
 Library exposes single configuration builder as well as other building blocks to use in configuration.
@@ -85,6 +86,10 @@ The whole webpack configuration looks as following:
         publicPath: '/'
     },
     module: {
+        preloaders: [{
+            test: /\.scss$/,
+            use: "import-glob",    
+        }],
         rules: [{
                 test: /\.(ts|tsx)?$/,
                 use: "awesome-typescript-loader?silent=true",
@@ -169,6 +174,7 @@ Rules could be imported as a collection or one by one:
 
 * typescript
 * sassStyles
+* globSass
 * styles
 * images
 * fonts

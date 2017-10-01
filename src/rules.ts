@@ -26,6 +26,11 @@ const sassStyles: webpack.Rule = {
     use: [cssHotReloadLoader].concat(extractSassLoaders)        
 }
 
+const sassGlob: webpack.Rule = {
+    test: /\.scss$/,
+    use: "import-glob",    
+}
+
 const extractCssLoaders: webpack.NewLoader[] = ExtractTextPlugin.extract({
     use: "css-loader?minimize",
     // use style-loader in development
@@ -81,6 +86,7 @@ const defaultServerRules = [
 export {
     typescript,
     sassStyles,
+    sassGlob,
     styles,
     images,
     fonts,

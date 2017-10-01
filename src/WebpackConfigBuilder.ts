@@ -3,7 +3,7 @@ import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import { getDefaultResolveSection } from "./common";
 import { defaultPlugins } from "./plugins";
 import { asUmdLib, asServerLib } from "./outputs";
-import { defaultClientRules, defaultServerRules } from "./rules";
+import { defaultClientRules, defaultServerRules, sassGlob } from "./rules";
 
 export class WebpackConfigBuilder {
     defaultEntryName: string;    
@@ -23,6 +23,7 @@ export class WebpackConfigBuilder {
             resolve: getDefaultResolveSection(),
             output: asUmdLib(outputPath),
             module: {
+                preLoaders: [sassGlob],
                 rules: [...defaultClientRules]
             },
             plugins: [...defaultPlugins, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css")]
@@ -36,8 +37,9 @@ export class WebpackConfigBuilder {
             resolve: getDefaultResolveSection(),
             output: asServerLib(outputPath),
             target: "node",
-            devtool: 'inline-source-map',
+            devtool: 'source-map',
             module: {
+                preLoaders: [sassGlob],
                 rules: [...defaultServerRules]
             },
             plugins: [...defaultPlugins, ...plugins]
