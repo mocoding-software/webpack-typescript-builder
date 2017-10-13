@@ -1,5 +1,5 @@
 import * as webpack from "webpack";
-import ExtractTextPlugin = require("extract-text-webpack-plugin");
+import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 
 const typescript: webpack.Rule = {
     test: /\.(ts|tsx)?$/,
