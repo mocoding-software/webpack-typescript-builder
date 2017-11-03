@@ -3,7 +3,7 @@ import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 
 const typescript: webpack.Rule = {
     test: /\.(ts|tsx)?$/,
-    use: "awesome-typescript-loader?silent=true",
+    use: "ts-loader?silent=true",
     exclude: [/node_modules/]
 }
 
