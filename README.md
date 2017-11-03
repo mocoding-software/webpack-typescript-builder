@@ -25,8 +25,9 @@ npm install webpack-typescript-builder --save-dev
 
 This will install you the following library (no need to duplicate in your config)
 - [Webpack](https://github.com/webpack/webpack)
+- [HappyPack](https://github.com/amireh/happypack)
 - [Typescript](https://github.com/Microsoft/TypeScript)
-- [Awesome TypeScript Loader](https://github.com/s-panferov/awesome-typescript-loader)
+- [TypeScript Loader](https://github.com/TypeStrong/ts-loader)
 - [Style Loader](https://github.com/webpack/style-loader)    
 - [CSS Loader](https://github.com/webpack/css-loader)
 - [File Loader](https://github.com/webpack/file-loader)
@@ -37,6 +38,7 @@ This will install you the following library (no need to duplicate in your config
 - [Extract Text Plugin](https://github.com/webpack/extract-text-webpack-plugin)
 - [Import Glob](https://github.com/terpiljenya/import-glob)
 - [TSLint Loader](https://github.com/wbuchwalter/tslint-loader)
+- [Fork TS Checker Webpack Plugin](https://github.com/Realytics/fork-ts-checker-webpack-plugin)
 
 ## API
 Library exposes single configuration builder as well as other building blocks to use in configuration.
@@ -97,7 +99,7 @@ The whole webpack configuration looks as following:
                 use: "import-glob",  
             }, {
                 test: /\.(ts|tsx)?$/,
-                use: "awesome-typescript-loader?silent=true",
+                use: "happypack/loader?id=ts",
                 exclude: [/node_modules/]
             }, {
                 test: /\.scss$/,
@@ -137,8 +139,8 @@ The whole webpack configuration looks as following:
         ]
     },
     plugins: [        
-        new CheckerPlugin(),
-        new TsConfigPathsPlugin(),
+        new HappyPack({ id: "ts" /* ... */ }),       
+        new ForkTsCheckerWebpackPlugin(),
         new ExtractTextPlugin("bundle.css")
     ]
 }

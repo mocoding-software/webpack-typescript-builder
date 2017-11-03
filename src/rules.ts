@@ -1,9 +1,10 @@
 import * as webpack from "webpack";
 import * as ExtractTextPlugin from "extract-text-webpack-plugin";
+import * as os from "os";
 
 const typescript: webpack.Rule = {
     test: /\.(ts|tsx)?$/,
-    use: "ts-loader?silent=true",
+    use: "happypack/loader?id=ts",
     exclude: [/node_modules/]
 }
 
@@ -29,13 +30,13 @@ const extractSassLoaders: webpack.NewLoader[] = ExtractTextPlugin.extract({
 
 const sassStyles: webpack.Rule = {
     test: /\.scss$/,
-    use: [cssHotReloadLoader].concat(extractSassLoaders)        
+    use: [cssHotReloadLoader].concat(extractSassLoaders)
 }
 
 const sassGlob: webpack.Rule = {
     enforce: "pre",
     test: /\.scss$/,
-    use: "import-glob",    
+    use: "import-glob",
 }
 
 const extractCssLoaders: webpack.NewLoader[] = ExtractTextPlugin.extract({
@@ -46,7 +47,7 @@ const extractCssLoaders: webpack.NewLoader[] = ExtractTextPlugin.extract({
 
 const styles: webpack.Rule = {
     test: /\.css$/,
-    use: [cssHotReloadLoader].concat(extractCssLoaders)        
+    use: [cssHotReloadLoader].concat(extractCssLoaders)
 }
 
 function images(emitFile: boolean = true): webpack.Rule {
