@@ -1,6 +1,8 @@
-src
-tsconfig.json
-tslint.json
-.gitignore
-.npmignore
-icon.png
+# ignore everything
+/*
+
+# except
+!dist/*
+!package.json
+!LICENSE
+!README.md

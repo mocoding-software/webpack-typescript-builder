@@ -1,18 +1,18 @@
-import * as webpack from 'webpack';
 import * as path from "path";
-var ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
-var HappyPack = require('happypack');
+import * as webpack from "webpack";
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+const HappyPack = require("happypack");
 
-export const defaultPlugins: webpack.Plugin[] = [    
+export const defaultPlugins: webpack.Plugin[] = [
     new HappyPack({
-        id: 'ts',
+        id: "ts",
         threads: 2,
         loaders: [
             {
-                path: 'ts-loader',
-                query: { happyPackMode: true }
-            }
-        ]
+                path: "ts-loader",
+                query: { happyPackMode: true },
+            },
+        ],
     }),
-    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true })
-]
+    new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+];

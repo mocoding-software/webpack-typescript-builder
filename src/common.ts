@@ -1,5 +1,5 @@
-import * as webpack from 'webpack';
+import * as webpack from "webpack";
 
 export const getDefaultResolveSection: () => webpack.Resolve = () => ({
-    extensions:  [".js", ".jsx", ".ts", ".tsx"]    
+    extensions:  [".js", ".jsx", ".ts", ".tsx"],
 });

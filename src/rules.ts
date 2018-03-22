@@ -1,54 +1,47 @@
-import * as webpack from "webpack";
 import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as os from "os";
+import * as webpack from "webpack";
 
 const typescript: webpack.Rule = {
     test: /\.(ts|tsx)?$/,
     use: "happypack/loader?id=ts",
-    exclude: [/node_modules/]
-}
+    exclude: [/node_modules/],
+};
 
 const tslint: webpack.Rule = {
     test: /\.(ts|tsx)?$/,
-    use: 'tslint-loader',
-    exclude: [/node_modules/]
-}
-
-const cssHotReloadLoader: webpack.NewLoader = {
-    loader: 'css-hot-loader'
+    use: "tslint-loader",
+    exclude: [/node_modules/],
 };
-
-const extractSassLoaders: webpack.NewLoader[] = ExtractTextPlugin.extract({
-    use: [{
-        loader: "css-loader?minimize"
-    }, {
-        loader: "sass-loader"
-    }],
-    // use style-loader in development
-    fallback: "style-loader"
-}) as webpack.NewLoader[];
 
 const sassStyles: webpack.Rule = {
     test: /\.scss$/,
-    use: [cssHotReloadLoader].concat(extractSassLoaders)
-}
+    use: [
+        "css-hot-loader",
+        ...ExtractTextPlugin.extract({
+            use: [
+                "css-loader?minimize",
+                "sass-loader",
+            ],
+        })],
+};
 
 const sassGlob: webpack.Rule = {
     enforce: "pre",
     test: /\.scss$/,
     use: "import-glob",
-}
-
-const extractCssLoaders: webpack.NewLoader[] = ExtractTextPlugin.extract({
-    use: "css-loader?minimize",
-    // use style-loader in development
-    fallback: "style-loader"
-}) as webpack.NewLoader[];
+};
 
 const styles: webpack.Rule = {
     test: /\.css$/,
-    use: [cssHotReloadLoader].concat(extractCssLoaders)
-}
+    use: [
+        "css-hot-loader",
+        ...ExtractTextPlugin.extract({
+            use: [
+                "css-loader?minimize",
+            ],
+        })],
+};
 
 function images(emitFile: boolean = true): webpack.Rule {
     return {
@@ -58,10 +51,10 @@ function images(emitFile: boolean = true): webpack.Rule {
             options: {
                 limit: 4096,
                 name: "img/[name].[hash].[ext]",
-                emitFile
-            }
-        }
-    }
+                emitFile,
+            },
+        },
+    };
 }
 
 function fonts(emitFile: boolean = true): webpack.Rule {
@@ -72,10 +65,10 @@ function fonts(emitFile: boolean = true): webpack.Rule {
             options: {
                 limit: 4096,
                 name: "fonts/[name].[hash].[ext]",
-                emitFile
-            }
-        }
-    }
+                emitFile,
+            },
+        },
+    };
 }
 
 const imagesNoEmit: webpack.Rule = images(false);
@@ -84,12 +77,12 @@ const ignoreSassStyles: webpack.Rule = { ...sassStyles, use: "ignore-loader" };
 const ignoreStyles: webpack.Rule = { ...styles, use: "ignore-loader" };
 
 const defaultClientRules = [
-    typescript, tslint, images(), fonts(), styles, sassStyles, sassGlob
+    typescript, tslint, images(), fonts(), styles, sassStyles, sassGlob,
 ];
 
 const defaultServerRules = [
-    typescript, tslint, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles
-]
+    typescript, tslint, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles,
+];
 
 export {
     typescript,
@@ -104,5 +97,5 @@ export {
     imagesNoEmit,
     fontsNoEmit,
     defaultClientRules,
-    defaultServerRules
-}
+    defaultServerRules,
+};

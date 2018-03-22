@@ -6,7 +6,8 @@
 		"moduleResolution": "node",		
 		"declaration": true,
 		"outDir": "dist",		
-		"removeComments": true		
+		"removeComments": true,
+		"skipLibCheck": true		
 	},
 	"files": [
 		"src/index.ts"
