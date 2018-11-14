@@ -1,8 +1,0 @@
-# ignore everything
-/*
-
-# except
-!dist/*
-!package.json
-!LICENSE
-!README.md
