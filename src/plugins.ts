@@ -6,7 +6,7 @@ const HappyPack = require("happypack");
 export const defaultPlugins: webpack.Plugin[] = [
     new HappyPack({
         id: "ts",
-        threads: 2,
+        threads: 4,
         loaders: [
             {
                 path: "ts-loader",
