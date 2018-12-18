@@ -3,13 +3,13 @@ import * as webpack from "webpack";
 import { getDefaultResolveSection } from "./common";
 import { asServerLib, asUmdLib } from "./outputs";
 import { defaultPlugins } from "./plugins";
-import { defaultClientRules, defaultServerRules, sassGlob } from "./rules";
+import { getDefaultClientRules, getDefaultServerRules, sassGlob } from "./rules";
 
 const isProduction = (process.argv.indexOf("-p") !== -1);
 
 export class WebpackConfigBuilder {
     public defaultEntryName: string;
-    constructor(private entry: webpack.Entry) {
+    constructor(private entry: webpack.Entry, private parallelBuild: boolean = true) {
 
         const entryKeys = Object.getOwnPropertyNames(entry);
         if (entryKeys.length === 0) {
@@ -20,32 +20,31 @@ export class WebpackConfigBuilder {
     }
 
     public toUmdConfig(outputPath: string, ...plugins: webpack.Plugin[]): webpack.Configuration {
+        const defaultPluginsList = this.parallelBuild ? defaultPlugins : [];
         return {
-            mode: isProduction ? "production" : "development",
-            stats: { modules: false },
+            devtool: isProduction ? undefined : "source-map" ,
             entry: this.entry,
-            resolve: getDefaultResolveSection(),
+            mode: isProduction ? "production" : "development",
+            module: { rules: getDefaultClientRules(this.parallelBuild) },
             output: asUmdLib(outputPath),
-            module: {
-                rules: [...defaultClientRules],
-            },
-            plugins: [...defaultPlugins, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css") as any],
+            plugins: [...defaultPluginsList, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css") as any],
+            resolve: getDefaultResolveSection(),
+            stats: { modules: false },
         };
     }
 
     public toServerConfig(outputPath: string, ...plugins: webpack.Plugin[]): webpack.Configuration {
+        const defaultPluginsList = this.parallelBuild ? defaultPlugins : [];
         return {
-            mode: isProduction ? "production" : "development",
-            stats: { modules: false },
-            entry: this.entry,
-            resolve: getDefaultResolveSection(),
-            output: asServerLib(outputPath),
-            target: "node",
             devtool: "source-map",
-            module: {
-                rules: [...defaultServerRules],
-            },
-            plugins: [...defaultPlugins, ...plugins],
+            entry: this.entry,
+            mode: isProduction ? "production" : "development",
+            module: { rules: getDefaultServerRules(this.parallelBuild) },
+            output: asServerLib(outputPath),
+            plugins: [...defaultPluginsList, ...plugins],
+            resolve: getDefaultResolveSection(),
+            stats: { modules: false },
+            target: "node",
         };
     }
 }

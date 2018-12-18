@@ -2,16 +2,37 @@ import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as os from "os";
 import * as webpack from "webpack";
 
-const typescript: webpack.Rule = {
-    test: /\.(ts|tsx)?$/,
-    use: "happypack/loader?id=ts",
+const parallelTypescript: webpack.Rule = {
     exclude: [/node_modules/],
+    test: /\.(ts|tsx)?$/,
+    use: [
+        { loader: "cache-loader" },
+        {
+            loader: "thread-loader",
+            options: {
+                // there should be 1 cpu for the fork-ts-checker-webpack-plugin
+                workers: os.cpus().length - 1,
+            },
+        },
+        {
+            loader: "ts-loader",
+            options: {
+                happyPackMode: true,
+            },
+        },
+    ],
+};
+
+const typescript: webpack.Rule = {
+    exclude: [/node_modules/],
+    test: /\.(ts|tsx)?$/,
+    use: { loader: "ts-loader" },
 };
 
 const tslint: webpack.Rule = {
+    exclude: [/node_modules/],
     test: /\.(ts|tsx)?$/,
     use: "tslint-loader",
-    exclude: [/node_modules/],
 };
 
 const sassStyles: webpack.Rule = {
@@ -49,9 +70,9 @@ function images(emitFile: boolean = true): webpack.Rule {
         use: {
             loader: "url-loader",
             options: {
+                emitFile,
                 limit: 4096,
                 name: "img/[name].[hash].[ext]",
-                emitFile,
             },
         },
     };
@@ -63,9 +84,9 @@ function fonts(emitFile: boolean = true): webpack.Rule {
         use: {
             loader: "url-loader",
             options: {
+                emitFile,
                 limit: 4096,
                 name: "fonts/[name].[hash].[ext]",
-                emitFile,
             },
         },
     };
@@ -76,16 +97,23 @@ const fontsNoEmit: webpack.Rule = fonts(false);
 const ignoreSassStyles: webpack.Rule = { ...sassStyles, use: "ignore-loader" };
 const ignoreStyles: webpack.Rule = { ...styles, use: "ignore-loader" };
 
-const defaultClientRules = [
-    typescript, tslint, images(), fonts(), styles, sassStyles, sassGlob,
-];
+function getDefaultClientRules(enableParallelBuild: boolean): webpack.Rule[] {
+    return [
+        enableParallelBuild ? parallelTypescript : typescript,
+        tslint, images(), fonts(), styles, sassStyles, sassGlob,
+    ];
+}
 
-const defaultServerRules = [
-    typescript, tslint, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles,
-];
+function getDefaultServerRules(enableParallelBuild: boolean): webpack.Rule[] {
+    return [
+        enableParallelBuild ? parallelTypescript : typescript,
+        tslint, fontsNoEmit, imagesNoEmit, ignoreStyles, ignoreSassStyles,
+    ];
+}
 
 export {
     typescript,
+    parallelTypescript,
     tslint,
     sassStyles,
     sassGlob,
@@ -96,6 +124,6 @@ export {
     ignoreStyles,
     imagesNoEmit,
     fontsNoEmit,
-    defaultClientRules,
-    defaultServerRules,
+    getDefaultClientRules,
+    getDefaultServerRules,
 };

@@ -23,9 +23,8 @@ The library is written in Typescript and compiled to ES6 JS.
 npm install webpack-typescript-builder --save-dev
 ```
 
-This will install you the following library (no need to duplicate in your config)
+This will install you the following libraries (no need to duplicate in your config)
 - [Webpack](https://github.com/webpack/webpack)
-- [HappyPack](https://github.com/amireh/happypack)
 - [Typescript](https://github.com/Microsoft/TypeScript)
 - [TypeScript Loader](https://github.com/TypeStrong/ts-loader)
 - [Style Loader](https://github.com/webpack/style-loader)    
@@ -39,6 +38,8 @@ This will install you the following library (no need to duplicate in your config
 - [Import Glob](https://github.com/terpiljenya/import-glob)
 - [TSLint Loader](https://github.com/wbuchwalter/tslint-loader)
 - [Fork TS Checker Webpack Plugin](https://github.com/Realytics/fork-ts-checker-webpack-plugin)
+- [Cache Loader](https://github.com/webpack-contrib/cache-loader)
+- [Thread Loader](https://github.com/webpack-contrib/thread-loader)
 
 ## API
 Library exposes single configuration builder as well as other building blocks to use in configuration.
@@ -56,9 +57,15 @@ const configBuilder = new WebpackConfigBuilder({
 export default configBuilder.toUmdConfig("wwwroot");
 ```
 This will generate webpack configuration that:
-1. Adds awesome-typescript-loader and default resolve extensions '.js', '.jsx', '.ts', '.tsx'
+1. Adds ts-loader and default resolve extensions '.js', '.jsx', '.ts', '.tsx'
 2. Adds images, fonts, style (css and sass) rules
-3. Adds CheckerPlugin and TsConfigPathsPlugin
+3. Adds Cache and Thread Loader for ts-loader. This option can be disabled if passing false as second argument to `WebpackConfigBuilder` constructor:
+
+```js
+const configBuilder = new WebpackConfigBuilder({
+    bundle: ["./src/index"]
+}, false); // this will disable parallel build which is enabled by default
+```
 
 The final `wwwroot` folder will look as following
 
@@ -99,16 +106,19 @@ The whole webpack configuration looks as following:
                 use: "import-glob",  
             }, {
                 test: /\.(ts|tsx)?$/,
-                use: "happypack/loader?id=ts",
+                use: [ 
+                    { loader: "cache-loader" }, 
+                    { loader: "thread-loader", options: { workers: os.cpus().length - 1 } }, 
+                    { loader: "ts-loader", options: { happyPackMode: true } },
+                ],
                 exclude: [/node_modules/]
             }, {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
-                    use: [{
-                        loader: 'css-loader?minimize'
-                    }, {
-                        loader: "sass-loader"
-                    }],
+                    use: [
+                        { loader: 'css-loader?minimize' }, 
+                        { loader: "sass-loader" }
+                    ],
                     fallback: "style-loader"
                 })
             }, {
@@ -138,8 +148,7 @@ The whole webpack configuration looks as following:
             }
         ]
     },
-    plugins: [        
-        new HappyPack({ id: "ts" /* ... */ }),       
+    plugins: [
         new ForkTsCheckerWebpackPlugin(),
         new ExtractTextPlugin("bundle.css")
     ]
@@ -180,6 +189,7 @@ Rules could be imported as a collection or one by one:
 #### Rules List
 
 * typescript
+* parallelTypescript
 * tslint
 * sassStyles
 * globSass
@@ -190,8 +200,8 @@ Rules could be imported as a collection or one by one:
 * ignoreStyles
 * imagesNoEmit
 * fontsNoEmit
-* defaultClientRules
-* defaultServerRules
+* getDefaultClientRules
+* getDefaultServerRules
 
 
 ### Other API
@@ -199,14 +209,14 @@ Library is very small. Take your time and explore `src` folder yourself.
 
 ## Known issues
 
-You may need add sass-loader and node-sass to your project.
+You may need to add sass-loader and node-sass to your project.
 
 License
 =======
 
 [The MIT License](https://raw.githubusercontent.com/mocoding-software/webpack-typescript-builder/master/LICENSE)
 
-COPYRIGHT (C) 2017 MOCODING, LLC
+COPYRIGHT (C) 2017-2019 MOCODING, LLC
 
 [npm-image]: https://img.shields.io/npm/v/webpack-typescript-builder.svg?style=flat-square
 [npm-url]: https://www.npmjs.com/package/webpack-typescript-builder
