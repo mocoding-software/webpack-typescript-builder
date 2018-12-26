@@ -20,9 +20,9 @@ export class WebpackConfigBuilder {
     }
 
     public toUmdConfig(outputPath: string, ...plugins: webpack.Plugin[]): webpack.Configuration {
-        const defaultPluginsList = this.parallelBuild ? defaultPlugins : [];
+        const defaultPluginsList = this.parallelBuild ? defaultPlugins() : [];
         return {
-            devtool: isProduction ? undefined : "source-map" ,
+            devtool: isProduction ? undefined : "source-map",
             entry: this.entry,
             mode: isProduction ? "production" : "development",
             module: { rules: getDefaultClientRules(this.parallelBuild) },
@@ -34,7 +34,7 @@ export class WebpackConfigBuilder {
     }
 
     public toServerConfig(outputPath: string, ...plugins: webpack.Plugin[]): webpack.Configuration {
-        const defaultPluginsList = this.parallelBuild ? defaultPlugins : [];
+        const defaultPluginsList = this.parallelBuild ? defaultPlugins() : [];
         return {
             devtool: "source-map",
             entry: this.entry,
