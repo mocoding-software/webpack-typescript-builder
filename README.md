@@ -29,6 +29,7 @@ This will install you the following libraries (no need to duplicate in your conf
 - [TypeScript Loader](https://github.com/TypeStrong/ts-loader)
 - [Style Loader](https://github.com/webpack/style-loader)    
 - [CSS Loader](https://github.com/webpack/css-loader)
+- [Optimize CSS Assets Plugin](https://github.com/NMFR/optimize-css-assets-webpack-plugin)
 - [File Loader](https://github.com/webpack/file-loader)
 - [URL Loader](https://github.com/webpack/url-loader)  
 - [SASS Loader](https://github.com/webpack-contrib/sass-loader)
@@ -150,6 +151,7 @@ The whole webpack configuration looks as following:
     },
     plugins: [
         new ForkTsCheckerWebpackPlugin(),
+        new OptimizeCssAssetsPlugin(),
         new ExtractTextPlugin("bundle.css")
     ]
 }

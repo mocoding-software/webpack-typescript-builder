@@ -8,5 +8,8 @@ export const defaultPlugins: () => webpack.Plugin[] = () => [
     new OptimizeCssAssetsPlugin({
         assetNameRegExp: /\.css$/g,
         cssProcessor: require("cssnano"),
+        cssProcessorOptions: {
+            preset: ["default", { discardComments: { removeAll: true } }],
+        },
     }),
 ];
