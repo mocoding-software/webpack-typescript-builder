@@ -41,7 +41,7 @@ const sassStyles: webpack.Rule = {
         "css-hot-loader",
         ...ExtractTextPlugin.extract({
             use: [
-                "css-loader?minimize",
+                "css-loader",
                 "sass-loader",
             ],
         })],
@@ -59,7 +59,7 @@ const styles: webpack.Rule = {
         "css-hot-loader",
         ...ExtractTextPlugin.extract({
             use: [
-                "css-loader?minimize",
+                "css-loader",
             ],
         })],
 };
