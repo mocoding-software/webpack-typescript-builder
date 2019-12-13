@@ -1,4 +1,3 @@
-import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as os from "os";
 import * as webpack from "webpack";
 
@@ -39,12 +38,13 @@ const sassStyles: webpack.Rule = {
     test: /\.scss$/,
     use: [
         "css-hot-loader",
-        ...ExtractTextPlugin.extract({
-            use: [
-                "css-loader",
-                "sass-loader",
-            ],
-        })],
+        // ...ExtractTextPlugin.extract({
+        //     use: [
+        //         "css-loader",
+        //         "sass-loader",
+        //     ],
+        // })
+      ],
 };
 
 const sassGlob: webpack.Rule = {
@@ -57,11 +57,12 @@ const styles: webpack.Rule = {
     test: /\.css$/,
     use: [
         "css-hot-loader",
-        ...ExtractTextPlugin.extract({
-            use: [
-                "css-loader",
-            ],
-        })],
+        // ...ExtractTextPlugin.extract({
+        //     use: [
+        //         "css-loader",
+        //     ],
+        // })
+      ],
 };
 
 function images(emitFile: boolean = true): webpack.Rule {

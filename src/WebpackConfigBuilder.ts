@@ -1,4 +1,3 @@
-import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as webpack from "webpack";
 import { getDefaultResolveSection } from "./common";
 import { asServerLib, asUmdLib } from "./outputs";
@@ -27,7 +26,7 @@ export class WebpackConfigBuilder {
             mode: isProduction ? "production" : "development",
             module: { rules: getDefaultClientRules(this.parallelBuild) },
             output: asUmdLib(outputPath),
-            plugins: [...defaultPluginsList, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css") as any],
+            plugins: [...defaultPluginsList, ...plugins],
             resolve: getDefaultResolveSection(),
             stats: { modules: false },
         };

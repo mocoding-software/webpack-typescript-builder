@@ -7,13 +7,15 @@
 		"declaration": true,
 		"outDir": "dist",		
 		"removeComments": true,
-		"skipLibCheck": true		
+    "skipLibCheck": true,
+    "esModuleInterop": true,
 	},
 	"files": [
-		"src/index.ts"
+    "src/index.ts",
+    "src/cli.ts"
 	],
 	"exclude": [
 		"node_modules",
-		"examples"
+		"sample"
 	]
 }

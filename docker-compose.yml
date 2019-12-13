@@ -1,0 +1,8 @@
+version: "3"
+
+services:  
+  devbox:    
+    image: devbox
+    command: /bin/sh
+    volumes:
+      - ~/.ssh:/tmp/.ssh:ro
