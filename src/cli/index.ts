@@ -1,9 +1,11 @@
 import program from "commander"
-import { build } from "./commands"
+import { build, config, serve } from "./commands"
 
 program.version("0.0.1")
   .description("Webpack typescript builder!")  
-  .command("build <dir>").action(build)
+program.command("config <dir>").action(config)
+program.command("build <dir>").action(build)
+program.command("serve <dir>").action(serve)
 
 program.parse(process.argv);
 

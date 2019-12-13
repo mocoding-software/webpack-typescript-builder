@@ -6,3 +6,5 @@ services:
     command: /bin/sh
     volumes:
       - ~/.ssh:/tmp/.ssh:ro
+    ports:
+      - 3000:3000
