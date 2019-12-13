@@ -101,7 +101,8 @@ const ignoreStyles: webpack.Rule = { ...styles, use: "ignore-loader" };
 function getDefaultClientRules(enableParallelBuild: boolean): webpack.Rule[] {
     return [
         enableParallelBuild ? parallelTypescript : typescript,
-        tslint, images(), fonts(), styles, sassStyles, sassGlob,
+        // tslint,
+        images(), fonts(), styles, sassStyles, sassGlob,
     ];
 }
 

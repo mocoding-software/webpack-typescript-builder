@@ -1,19 +1,16 @@
 {
-	"compilerOptions": {			
+	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es6",
-		"noImplicitAny": true,		
-		"moduleResolution": "node",		
+		"noImplicitAny": true,
+		"moduleResolution": "node",
 		"declaration": true,
-		"outDir": "dist",		
+		"outDir": "dist",
 		"removeComments": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"jsx": "react",		
 	},
-	"files": [
-    "src/index.ts",
-    "src/cli.ts"
-	],
 	"exclude": [
 		"node_modules",
 		"sample"
