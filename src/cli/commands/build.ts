@@ -1,7 +1,8 @@
+import program from "commander"
 import webpack from "webpack";
 import { createConfig } from "./config";
 
-export function build(dir: string) {
+function build(dir: string) {
     const config = createConfig(dir);
 
     let compiler = webpack(config);
@@ -11,4 +12,4 @@ export function build(dir: string) {
     });
 }
 
-
+program.command("build <dir>").action(build)

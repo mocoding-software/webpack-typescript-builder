@@ -23,9 +23,11 @@ export function createConfig(dir: string): webpack.Configuration {
     return config;
 }
 
-export function config(dir: string){
+function config(dir: string){
     const config = createConfig(dir);
     console.log(config)
 }
+
+program.command("config <dir>").action(config)
 
 
