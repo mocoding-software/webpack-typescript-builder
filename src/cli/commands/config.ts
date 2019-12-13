@@ -12,7 +12,11 @@ export function createConfig(dir: string): webpack.Configuration {
     const bootstrapPath = path.join(__dirname, "../../bootstrap/client.tsx");
 
     const entry: webpack.Entry = {
-        index: [bootstrapPath]
+        index: [
+          'webpack-hot-middleware/client',
+          'react-hot-loader/patch',
+          bootstrapPath
+        ]
     };
 
     const config = createUmdConfig(entry, outputPath, false);

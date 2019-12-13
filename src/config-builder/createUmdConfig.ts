@@ -3,19 +3,20 @@ import rules from "./rules"
 import plugins from "./plugins"
 
 export function createUmdConfig(entry: webpack.Entry, outputPath: string, isProduction: boolean): webpack.Configuration {
+    var newPlugins = [...plugins, new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin()]
     return {
         devtool: isProduction ? undefined : "source-map",
         entry,
         mode: isProduction ? "production" : "development",
         module: { rules: rules },
         output: {
-            filename: "[name].[contenthash:8].js",
+            filename: "[name].js", //.[contenthash:8]
             library: "[name]",
             libraryTarget: "umd",
             path: outputPath,
             publicPath: "/",
         },
-        plugins,
+        plugins: newPlugins,
         resolve: {
             extensions: [".js", ".jsx", ".ts", ".tsx"],
         },

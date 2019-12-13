@@ -2,7 +2,8 @@ import program from "commander"
 import webpack from "webpack";
 import express from "express";
 //import middleware from "webpack-dev-middleware"
-const middleware = require('webpack-dev-middleware');
+const devMiddleware = require('webpack-dev-middleware');
+const hotMiddleware = require("webpack-hot-middleware");
 import { createConfig } from "./config";
 
 function serve(dir: string) {
@@ -11,7 +12,8 @@ function serve(dir: string) {
     const compiler = webpack(config);
     const app = express();
 
-    app.use(middleware(compiler, { serverSideRender: true }));
+    app.use(devMiddleware(compiler, { serverSideRender: true }));
+    app.use(hotMiddleware(compiler));
 
     // The following middleware would not be invoked until the latest build is finished.
     app.use((req, res) => {          
