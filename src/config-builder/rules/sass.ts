@@ -7,10 +7,16 @@ export const sass: webpack.Rule = {
     {
       loader: MiniCssExtractPlugin.loader,
       options: {        
-        hmr: true,
+        hmr: true, //TODO: Production
       },
     },    
     'css-loader',    
     'sass-loader',
   ],
+};
+
+export const sassGlob: webpack.Rule = {
+  enforce: "pre",
+  test: /\.scss$/,
+  use: "import-glob",
 };

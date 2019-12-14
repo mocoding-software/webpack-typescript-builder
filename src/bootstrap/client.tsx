@@ -1,16 +1,18 @@
-// const App = require("injected-app-module")();
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+
+// @ts-ignore
 import App from "injected-app-module";
-import * as ReactDOM from "react-dom"
-import * as React from "react"
+
 const element = document.getElementById("app");
 ReactDOM.hydrate(<App />, element);
 
+if (module.hot) {
+  module.hot.accept();
+}
+// module.hot.accept()"../app", () => {
+//     const { App } = require("injected-app-module");
 
-if (module.hot)
-  module.hot.accept()
-    // module.hot.accept()"../app", () => {
-    //     const { App } = require("injected-app-module");       
+//     ReactDOM.hydrate(<App />, element);
 
-    //     ReactDOM.hydrate(<App />, element);
-
-    // });
+// });
