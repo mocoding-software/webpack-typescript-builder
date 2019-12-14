@@ -29,12 +29,10 @@ function serve(dir: string) {
         <html>
         <head>
             <title>My App</title>
-            <style>
             ${assets
-                .filter((path: any) => path.endsWith('.css'))
-                .map((path: any) => fs.readFileSync(outputPath + '/' + path))
-                .join('\n')}
-            </style>
+              .filter((path: any) => path.endsWith('.css'))
+              .map((path: any) => `<link rel="stylesheet" type="text/css" href="${path}" />`)
+              .join('\n')}            
         </head>
         <body>
             <div id="app"></div>
