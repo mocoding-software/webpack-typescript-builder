@@ -4,11 +4,7 @@ import "./index.scss";
 
 const img = require("./image.png").default;
 
-interface IAppProps {
-  helmetContext?: any;
-}
-
-export default class App extends React.Component<IAppProps> {
+export class App extends React.Component {
   public render(): JSX.Element {
     return (
       <div>

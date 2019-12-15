@@ -9,7 +9,7 @@ export function createConfigs(dir: string): webpack.Configuration [] {
     // set default paths
     const outputPath = path.join(cwd, dir, "wwwroot");
     const outputPathServer = path.join(cwd, dir, "wwwroot_node");
-    const appPath = path.join(cwd, dir, "index");
+    const appPath = path.join(cwd, dir);
     const clientEntryPoint = path.join(__dirname, "../../bootstrap/client.tsx");
     const serverEntryPoint = path.join(__dirname, "../../bootstrap/server.tsx");
 
