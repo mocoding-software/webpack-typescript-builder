@@ -1,34 +1,45 @@
 import program from "commander"
 import webpack from "webpack";
-import { createUmdConfig } from "../../config-builder"
+import { createWebConfig, createServerConfig } from "../../config-builder"
 import * as path from "path";
 
-export function createConfig(dir: string): webpack.Configuration {
+export function createConfigs(dir: string): webpack.Configuration [] {
     const cwd = process.cwd();   
 
     // set default paths
     const outputPath = path.join(cwd, dir, "wwwroot");
+    const outputPathServer = path.join(cwd, dir, "wwwroot_node");
     const appPath = path.join(cwd, dir, "index");
-    const bootstrapPath = path.join(__dirname, "../../bootstrap/client.tsx");
+    const clientEntryPoint = path.join(__dirname, "../../bootstrap/client.tsx");
+    const serverEntryPoint = path.join(__dirname, "../../bootstrap/server.tsx");
 
-    const entry: webpack.Entry = {
+    const client: webpack.Entry = {
         index: [
           'webpack-hot-middleware/client',
           'react-hot-loader/patch',
-          bootstrapPath
+          clientEntryPoint
         ]
     };
 
-    const config = createUmdConfig(entry, outputPath, false);
-    config.resolve.alias = {
+    const server: webpack.Entry = {
+      server: [ serverEntryPoint ]
+  };
+
+    var clientConfig = createWebConfig(client, outputPath, false);
+    clientConfig.resolve.alias = {
+        "injected-app-module": appPath,
+    };
+
+    var serverConfig = createServerConfig(server, outputPathServer, false);
+    serverConfig.resolve.alias = {
         "injected-app-module": appPath,
     };
     
-    return config;
+    return [clientConfig, serverConfig];
 }
 
 function config(dir: string){
-    const config = createConfig(dir);
+    const config = createConfigs(dir);
     console.log(config)
 }
 

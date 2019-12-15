@@ -1,1 +1,2 @@
-export * from "./createUmdConfig"
+export * from "./createWebConfig"
+export * from "./createServerConfig"

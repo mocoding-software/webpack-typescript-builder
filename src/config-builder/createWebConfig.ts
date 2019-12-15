@@ -1,24 +1,33 @@
 import * as webpack from "webpack";
-import rules from "./rules"
-import plugins from "./plugins"
+import { clientRules } from "./rules";
+import plugins from "./plugins";
 
-export function createUmdConfig(entry: webpack.Entry, outputPath: string, isProduction: boolean): webpack.Configuration {
-  var newPlugins = [...plugins, new webpack.HotModuleReplacementPlugin(), new webpack.NoEmitOnErrorsPlugin()]
+export function createWebConfig(
+  entry: webpack.Entry,
+  outputPath: string,
+  isProduction: boolean
+): webpack.Configuration {
+  var newPlugins = [
+    ...plugins,
+    new webpack.HotModuleReplacementPlugin({ quiet: true }),
+    new webpack.NoEmitOnErrorsPlugin()
+  ];
   return {
+    name: "client",
     devtool: isProduction ? undefined : "source-map",
     entry,
     mode: isProduction ? "production" : "development",
-    module: { rules: rules },
+    module: { rules: clientRules },
     output: {
       filename: "[name].js", //.[contenthash:8]
       library: "[name]",
       libraryTarget: "umd",
       path: outputPath,
-      publicPath: "/",
+      publicPath: "/"
     },
     plugins: newPlugins,
     resolve: {
-      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      extensions: [".js", ".jsx", ".ts", ".tsx"]
     },
     stats: true,
     optimization: {
@@ -27,15 +36,15 @@ export function createUmdConfig(entry: webpack.Entry, outputPath: string, isProd
         cacheGroups: {
           vendors: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all'
+            name: "vendors",
+            chunks: "all"
           },
           styles: {
-            name: 'styles',
+            name: "styles",
             test: /\.css$/,
-            chunks: 'all',
-            enforce: true,
-          },
+            chunks: "all",
+            enforce: true
+          }
         }
       }
     }
