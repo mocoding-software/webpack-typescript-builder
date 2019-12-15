@@ -26,21 +26,8 @@ function serverRenderer(stats: IServerRenderStats) {
       styles: assets.filter((path: any) => path.endsWith('.css')),
       scripts: assets.filter((path: any) => path.endsWith('.js'))
     };        
+
     res.status(200).send(renderToStaticMarkup(<Html {...htmlProps} />));
-    //     res.status(200).send(
-    //       `<!doctype html>
-    //   <html>
-    //   <head>
-    //       <title>Test</title>
-    //   </head>
-    //   <body>
-    //       <div id="app">${renderToString(React.createElement(App))}</div>
-    //       <script src="/vendors.js"></script>
-    //       <script src="/index.js"></script>
-    //   </body>
-    //   </html>
-    // `
-    //     );
   };
 }
 
