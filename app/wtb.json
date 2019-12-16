@@ -1,11 +1,7 @@
 {
-  "output": {
-    "client": "./wwwroot",
-    "server": "./wwwroot_node"
-  },
-  "wrappers": {
-    "helmet": true,
-    "redux": false
-  },
+  "outputClientPath": "./wwwroot",
+  "outputServerPath": "./wwwroot_node",
+  "enableHelmet": true,
+  "enableRedux": false,  
   "serverSideRendering": true
 }

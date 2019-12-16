@@ -16,6 +16,7 @@
     "wtb:config": "ts-node src/cli config ./examples/basic",
     "wtb:build": "ts-node src/cli build ./examples/basic",
     "wtb:serve": "ts-node src/cli serve ./examples/basic",
+    "wtb:build-redux": "ts-node src/cli build ./examples/redux",
     "wtb:serve-redux": "ts-node src/cli serve ./examples/redux"
   },
   "keywords": [

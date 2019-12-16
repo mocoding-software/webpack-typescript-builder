@@ -4,7 +4,7 @@ interface ApplicationState {
   counter: number;
 }
 
-const counterReducer = (state = 0, action: Redux.Action) => {
+const counterReducer = (state = 1, action: Redux.Action) => {
   switch (action.type) {
     case "INCREMENT":
       return state + 1;

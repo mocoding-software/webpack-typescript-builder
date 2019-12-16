@@ -24,14 +24,14 @@ export function createConfigs(dir: string): webpack.Configuration[] {
 
   const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsLocation, 'utf8'));  
   const settings: Settings = fs.existsSync(customSettingsLocation) 
-    ? {...defaultSettings, ...JSON.parse(fs.readFileSync(customSettingsLocation, 'utf8'))} 
+    ? {...defaultSettings, ...(JSON.parse(fs.readFileSync(customSettingsLocation, 'utf8')))} 
     : defaultSettings;    
 
   // outputPath - build directory
   // outputPathServer - build directory
 
-  const outputPath = path.join(projectRoot, settings.output.client);
-  const outputPathServer = path.join(projectRoot, settings.output.server);    
+  const outputPath = path.join(projectRoot, settings.outputClientPath);
+  const outputPathServer = path.join(projectRoot, settings.outputServerPath);
   const clientEntryPoint = path.join(libAppRoot, "client.tsx");
   const serverEntryPoint = path.join(libAppRoot, "server.tsx");
 
@@ -56,8 +56,8 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const noopWrapper = "./wrapper-noop"
 
   inject(configs, "injected-app-module", appRoot);
-  inject(configs, "injected-helmet-wrapper", settings.wrappers.helmet ? helmetWrapper : noopWrapper);
-  inject(configs, "injected-redux-wrapper", settings.wrappers.redux ? reduxWrapper : noopWrapper);
+  inject(configs, "injected-helmet-wrapper", settings.enableHelmet ? helmetWrapper : noopWrapper);
+  inject(configs, "injected-redux-wrapper", settings.enableRedux ? reduxWrapper : noopWrapper);
   
   return configs;
 }

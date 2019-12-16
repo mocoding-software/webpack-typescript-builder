@@ -1,15 +1,7 @@
 export interface Settings {
-  output: Folders;
-  wrappers: Wrappers;
+  outputClientPath: string;
+  outputServerPath: string;
+  enableHelmet: boolean;
+  enableRedux: boolean;
   serverSideRendering: boolean;
-}
-
-export interface Wrappers {
-  helmet: boolean;
-  redux: boolean;
-}
-
-export interface Folders {
-  client: string;
-  server: string;
 }
