@@ -12,7 +12,7 @@ interface IServerRenderStats {
 import { App } from "injected-app-module";
 
 function serverRenderer(stats: IServerRenderStats) {
-  return (req: any, res: any, next: any) => {    
+  return (req: any, res: any, next: any) => {
     const context: any = {
       helmetContext: {}
     };
@@ -23,15 +23,14 @@ function serverRenderer(stats: IServerRenderStats) {
     );
     const markup = renderToString(app);
 
-    const assetsByChunkName = res.locals.webpackStats.stats[0].toJson()
-      .assetsByChunkName;
+    const assetsByChunkName = res.locals.webpackStats.stats[0].toJson().assetsByChunkName;
     const assets: any = [].concat.apply([], Object.values(assetsByChunkName));
-      
+
     const htmlProps: HtmlProps = {
       markup,
       context,
       styles: assets.filter((path: any) => path.endsWith(".css")),
-      scripts: assets.filter((path: any) => path.endsWith(".js")),      
+      scripts: assets.filter((path: any) => path.endsWith(".js")),
     };
 
     res.status(200).send(renderToStaticMarkup(<Html {...htmlProps} />));
