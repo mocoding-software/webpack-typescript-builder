@@ -22,7 +22,8 @@ export function createServerConfig(
     },
     plugins: newPlugins,
     resolve: {
-      extensions: [".js", ".jsx", ".ts", ".tsx"]
+      extensions: [".js", ".jsx", ".ts", ".tsx"],
+      alias: {}
     },
     stats: true,
     target: "node",

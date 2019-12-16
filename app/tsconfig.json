@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {		
+		"moduleResolution": "node",   
+		"module": "commonjs", 
+		"experimentalDecorators": true,    
+		"allowJs": false,		
+		"target": "es5",    
+		"noImplicitAny": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"strictNullChecks": true,
+		"jsx": "react",
+		"lib": [
+		  "es6",
+		  "dom"
+		]    
+	  },
+	  "exclude": [    
+		"node_modules"    
+	  ]
+}

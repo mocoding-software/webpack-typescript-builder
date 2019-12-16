@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as Webpack from "webpack";
 import { renderToString, renderToStaticMarkup } from "react-dom/server";
-import { Html, HtmlProps } from "./html";
+import { Html, HtmlProps } from "./common";
 import { Wrapper } from "./wrapper";
 
 interface IServerRenderStats {

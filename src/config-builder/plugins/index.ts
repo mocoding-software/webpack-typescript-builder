@@ -4,6 +4,5 @@ import { cssExtractPlugin } from "./css-extract"
 
 export default [
   manifest, 
-  cssExtractPlugin,
-  new webpack.NamedModulesPlugin(),
+  cssExtractPlugin
 ];

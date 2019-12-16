@@ -1,0 +1,11 @@
+{
+  "output": {
+    "client": "./wwwroot",
+    "server": "./wwwroot_node"
+  },
+  "wrappers": {
+    "helmet": true,
+    "redux": false
+  },
+  "serverSideRendering": true
+}

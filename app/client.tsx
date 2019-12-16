@@ -1,5 +1,4 @@
 import * as React from "react";
-import * as Redux from "redux";
 import * as ReactDOM from "react-dom";
 
 // @ts-ignore
@@ -22,7 +21,7 @@ render(AppModule.App);
 
 if (module.hot) {
   module.hot.accept(["injected-app-module"], () => {
-    const { App } = require<typeof AppModule>("injected-app-module");     
+    const { App } = require<typeof AppModule>("injected-app-module");
     render(App);
-  });  
+  });
 }

@@ -2,10 +2,10 @@
   "name": "webpack-typescript-builder",
   "version": "3.1.0",
   "description": "Webpack config builder for typescript, styles (css and sass), fonts and images.",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.js",
+  "main": "lib/index.js",
+  "typings": "index.d.js",
   "bin": {
-    "wtb": "dist/cli.js"
+    "wtb": "lib/cli/index.js"
   },
   "scripts": {
     "start": "ts-node src/cli build ./sample",

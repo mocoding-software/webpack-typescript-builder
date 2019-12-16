@@ -1,20 +1,20 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es6",
-		"noImplicitAny": true,
-		"moduleResolution": "node",
-		"declaration": true,
-		"outDir": "dist",
-		"removeComments": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
-    "jsx": "react",		
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react",
     "experimentalDecorators": true
-	},
-	"exclude": [
-		"node_modules",
-		"sample",
-		"src/legacy"
-	]
+  },
+  "exclude": [
+    "node_modules",
+    "sample",
+    "src/legacy"
+  ]
 }

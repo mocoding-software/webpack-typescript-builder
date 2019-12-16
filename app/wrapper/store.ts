@@ -23,8 +23,6 @@ export const store = Redux.createStore(
   Redux.compose(pipeline)
 );
 
-export * from "./redux-wrapper";
-
 if (module.hot) {
   module.hot.accept(["injected-app-module/store"], () => {    
     const { reducers } = require("injected-app-module/store");

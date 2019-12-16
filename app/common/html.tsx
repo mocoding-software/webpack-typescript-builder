@@ -1,10 +1,4 @@
 import * as React from "react";
-import { Helmet } from "react-helmet-async";
-
-interface InlineScript {
-  position: "top" | "bottom";
-  script: string;
-}
 
 export interface HtmlProps {
   styles?: string[];
@@ -60,7 +54,7 @@ export class Html extends React.Component<HtmlProps> {
     );
   }
 
-  private getOrEmpty<T>(array: T[]): T[] {
+  private getOrEmpty<T>(array?: T[]): T[] {
     return array || [];
   }
 

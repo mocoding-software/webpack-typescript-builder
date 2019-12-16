@@ -5,11 +5,9 @@ import { createConfigs } from "./config";
 function build(dir: string) {
     const config = createConfigs(dir);
 
-    let compiler = webpack(config);
-    //new webpack.ProgressPlugin().apply(compiler);
+    let compiler = webpack(config);    
     compiler.run((err, stats: any) => {
-        console.log(stats.stats[0].compilation);
-        // console.log(stats.stats[1].compilation);
+        console.log(stats.stats[0].compilation);        
     });
 }
 
