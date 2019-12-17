@@ -1,2 +1,2 @@
-export * from "./createWebConfig"
-export * from "./createServerConfig"
+export * from "./createWebConfig";
+export * from "./createServerConfig";

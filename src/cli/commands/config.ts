@@ -1,11 +1,10 @@
-import program from "commander"
-import webpack, { Configuration } from "webpack";
-import { createWebConfig, createServerConfig } from "../../config-builder"
-import * as path from "path";
+import program from "commander";
 import * as fs from "fs";
-import { Settings } from "../settings";
+import * as path from "path";
+import webpack from "webpack";
 import ManifestPlugin from "webpack-manifest-plugin";
-
+import { createServerConfig, createWebConfig } from "../../config-builder";
+import { Settings } from "../settings";
 
 export function createConfigs(dir: string): webpack.Configuration[] {
   // Defaults:
@@ -24,9 +23,14 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const defaultSettingsLocation = path.join(libAppRoot, settingsFileName);
   const customSettingsLocation = path.join(appRoot, settingsFileName);
 
-  const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsLocation, 'utf8'));
+  const defaultSettings = JSON.parse(
+    fs.readFileSync(defaultSettingsLocation, "utf8"),
+  );
   const settings: Settings = fs.existsSync(customSettingsLocation)
-    ? { ...defaultSettings, ...(JSON.parse(fs.readFileSync(customSettingsLocation, 'utf8'))) }
+    ? {
+        ...defaultSettings,
+        ...JSON.parse(fs.readFileSync(customSettingsLocation, "utf8")),
+      }
     : defaultSettings;
 
   // outputPath - build directory
@@ -38,49 +42,61 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const serverEntryPoint = path.join(libAppRoot, "server.ts");
   const ssrEntryPoint = path.join(libAppRoot, "ssr");
 
+  const devEntries = program.production
+    ? []
+    : ["webpack-hot-middleware/client", "react-hot-loader/patch"];
+
   const client: webpack.Entry = {
-    index: [
-      'webpack-hot-middleware/client',
-      'react-hot-loader/patch',
-      clientEntryPoint
-    ]
+    index: [...devEntries, clientEntryPoint],
   };
 
   const server: webpack.Entry = {
-    server: [serverEntryPoint],    
+    server: program.production ? ssrEntryPoint : serverEntryPoint,
   };
 
-  var clientConfig = createWebConfig(client, outputPath, false);
-  var serverConfig = createServerConfig(server, outputPathServer, false);
-  
-  clientConfig.plugins.push(new ManifestPlugin({
-    fileName: path.join(outputPathServer, "manifest.json"),
-    filter: _ => _.isChunk
-  }));
+  const clientConfig = createWebConfig(client, outputPath, program.production);
+  const serverConfig = createServerConfig(
+    server,
+    outputPathServer,
+    program.production,
+  );
 
-  var configs = [clientConfig, serverConfig];
+  clientConfig.plugins.push(
+    new ManifestPlugin({
+      fileName: path.join(outputPathServer, "manifest.json"),
+      filter: _ => _.isChunk,
+    }),
+  );
 
-  const helmetWrapper = "./wrapper-helmet"
-  const reduxWrapper = "./wrapper-redux"
-  const noopWrapper = "./wrapper-noop"
+  const configs = [clientConfig, serverConfig];
 
-  inject(configs, "injected-app-module", appRoot);  
-  inject(configs, "injected-redux-wrapper", settings.enableRedux ? reduxWrapper : noopWrapper);
+  const reduxWrapper = "./wrapper-redux";
+  const noopWrapper = "./wrapper-noop";
+
+  inject(configs, "injected-app-module", appRoot);
+  inject(
+    configs,
+    "injected-redux-wrapper",
+    settings.enableRedux ? reduxWrapper : noopWrapper,
+  );
 
   return configs;
 }
 
-function inject(configs: webpack.Configuration[], module: string, alias: string) {
-  for (const config of configs) {
-    config.resolve.alias[module] = alias;
+function inject(
+  configs: webpack.Configuration[],
+  module: string,
+  alias: string,
+) {
+  for (const item of configs) {
+    item.resolve.alias[module] = alias;
   }
 }
 
 function config(dir: string) {
-  const config = createConfigs(dir);
-  console.log(config)
+  const cfg = createConfigs(dir);
+  // tslint:disable-next-line: no-console
+  console.log(cfg);
 }
 
-program.command("config <dir>").action(config)
-
-
+program.command("config <dir>").action(config);

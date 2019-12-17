@@ -8,9 +8,9 @@ function createImagesRule(emitFile: boolean = true): webpack.Rule {
       options: {
         emitFile,
         limit: 4096,
-        name: "img/[name].[contenthash:6].[ext]"
-      }
-    }
+        name: "img/[name].[contenthash:6].[ext]",
+      },
+    },
   };
 }
 

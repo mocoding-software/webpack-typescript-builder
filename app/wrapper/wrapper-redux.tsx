@@ -1,12 +1,12 @@
 import * as React from "react";
-import * as Redux from "redux";
 import { Provider } from "react-redux";
+import * as Redux from "redux";
 import { WrapperProps } from "../common";
 
 import { logger } from "redux-logger";
 
 // @ts-ignore
-import { reducers, middlewares } from "injected-app-module/store";
+import { middlewares, reducers } from "injected-app-module/store";
 
 // Adding logger to middlewares
 const pipeline = Redux.applyMiddleware(...middlewares.concat(logger));
@@ -23,23 +23,23 @@ const initialState =
 const store = Redux.createStore(
   rootReducers,
   initialState,
-  Redux.compose(pipeline)
+  Redux.compose(pipeline),
 );
 
 if (module.hot) {
-  module.hot.accept(["injected-app-module/store"], () => {    
-    const { reducers } = require("injected-app-module/store");
-    const nextReducer = Redux.combineReducers(reducers);
+  module.hot.accept(["injected-app-module/store"], () => {
+    const { newReducers } = require("injected-app-module/store");
+    const nextReducer = Redux.combineReducers(newReducers);
 
     store.replaceReducer(nextReducer as any);
   });
 }
 
-
 export default class ReduxWrapper extends React.Component<WrapperProps> {
   public render(): React.ReactNode {
-    if (!this.props.context.store)
+    if (!this.props.context.store) {
       this.props.context.store = store;
+    }
     return (
       <Provider store={this.props.context.store}>
         {this.props.children}

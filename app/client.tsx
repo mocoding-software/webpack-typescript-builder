@@ -5,7 +5,7 @@ import * as ReactDOM from "react-dom";
 import * as AppModule from "injected-app-module";
 import { Wrapper } from "./wrapper";
 
-var context: any = {};
+const context: any = {};
 
 function render(App: React.ComponentType) {
   const element = document.getElementById("app");
@@ -13,15 +13,15 @@ function render(App: React.ComponentType) {
     <Wrapper context={context}>
       <App />
     </Wrapper>,
-    element
+    element,
   );
 }
 
 render(AppModule.App);
 
-if (module.hot) {
-  module.hot.accept(["injected-app-module"], () => {
-    const { App } = require<typeof AppModule>("injected-app-module");
-    render(App);
-  });
-}
+// if (module.hot) {
+//   module.hot.accept(["injected-app-module"], () => {
+//     const { App } = require<typeof AppModule>("injected-app-module");
+//     render(App);
+//   });
+// }

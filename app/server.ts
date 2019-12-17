@@ -1,18 +1,18 @@
 import * as Webpack from "webpack";
-import render from "./ssr"
+import render from "./ssr";
 
-interface IServerRenderStats {
+interface ServerRenderStats {
   clientStats: Webpack.Stats;
 }
 
-function serverRenderer(stats: IServerRenderStats) {
+function serverRenderer(stats: ServerRenderStats) {
   return (req: any, res: any, next: any) => {
-    if (req.url == "/") {
-      const assets = res.locals.webpackStats.stats[0].toJson().assetsByChunkName;
-      const assetsUrls: string[] = [].concat.apply([], Object.values(assets));      
+    if (req.url === "/") {
+      const assets = res.locals.webpackStats.stats[0].toJson()
+        .assetsByChunkName;
+      const assetsUrls: string[] = [].concat.apply([], Object.values(assets));
       res.status(200).send(render(req.url, assetsUrls));
-    }
-    else {
+    } else {
       res.status(404).send();
     }
   };

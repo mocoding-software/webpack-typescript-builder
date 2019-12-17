@@ -10,11 +10,15 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false,        
+        "configFile": "tslint.json",
+        "suppressWhileTypeErrorsPresent": false
+      }
+    ]
   },
-  "exclude": [
-    "node_modules",
-    "sample",
-    "src/legacy"
-  ]
+  "exclude": ["node_modules", "examples", "src/legacy"]
 }

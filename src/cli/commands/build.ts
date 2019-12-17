@@ -1,14 +1,14 @@
-import program from "commander"
+import program from "commander";
 import webpack from "webpack";
 import { createConfigs } from "./config";
 
 function build(dir: string) {
-    const config = createConfigs(dir);
+  const config = createConfigs(dir);
 
-    let compiler = webpack(config);    
-    compiler.run((err, stats: any) => {
-        //console.log(stats.stats[0].compilation);        
-    });
+  const compiler = webpack(config);
+  compiler.run((err, stats: any) => {
+    // some
+  });
 }
 
-program.command("build <dir>").action(build)
+program.command("build <dir>").action(build);

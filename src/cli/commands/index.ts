@@ -1,3 +1,3 @@
-import "./config"
-import "./build"
-import "./serve"
+import "./build";
+import "./config";
+import "./serve";

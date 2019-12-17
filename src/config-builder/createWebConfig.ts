@@ -1,53 +1,60 @@
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import * as webpack from "webpack";
 import { clientRules } from "./rules";
-import plugins from "./plugins";
 
 export function createWebConfig(
   entry: webpack.Entry,
   outputPath: string,
-  isProduction: boolean
+  isProd: boolean,
 ): webpack.Configuration {
-  var newPlugins = [
-    ...plugins,
-    new webpack.HotModuleReplacementPlugin({ quiet: true }),
-    new webpack.NoEmitOnErrorsPlugin(),    
+  const plugins = [
+    new MiniCssExtractPlugin({
+      filename: isProd ? "[name].[contenthash:6].css" : "[name].css",
+    }),
   ];
+
+  if (!isProd) {
+    plugins.push(new webpack.HotModuleReplacementPlugin({ quiet: true }));
+  }
+
   return {
-    name: "client",
-    devtool: isProduction ? undefined : "source-map",
+    devtool: isProd ? undefined : "source-map",
     entry,
-    mode: isProduction ? "production" : "development",
-    module: { rules: clientRules },
+    mode: isProd ? "production" : "development",
+    module: { rules: clientRules(isProd) },
+    name: "client",
+    optimization: {
+      minimize: false,
+      namedModules: true,
+      noEmitOnErrors: true,
+      splitChunks: {
+        cacheGroups: {
+          styles: {
+            chunks: "all",
+            enforce: true,
+            name: "styles",
+            test: /\.css$/,
+          },
+          vendors: {
+            chunks: "all",
+            name: "vendors",
+            test: /[\\/]node_modules[\\/]/,
+          },
+        },
+      },
+    },
     output: {
-      filename: "[name].js", //.[contenthash:8]
+      filename: isProd ? "[name].[contenthash:6].js" : "[name].js",
       library: "[name]",
       libraryTarget: "umd",
       path: outputPath,
-      publicPath: "/"
+      publicPath: "/",
     },
-    plugins: newPlugins,
+    plugins,
     resolve: {
+      alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],
-      alias: {}
     },
     stats: true,
-    optimization: {
-      minimize: isProduction,
-      splitChunks: {
-        cacheGroups: {
-          vendors: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            chunks: "all"
-          },
-          styles: {
-            name: "styles",
-            test: /\.css$/,
-            chunks: "all",
-            enforce: true
-          }
-        }
-      }
-    }
   };
 }

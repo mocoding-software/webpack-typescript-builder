@@ -30,12 +30,12 @@ class AppInternal extends React.Component<AppProps & AppDispatch, any> {
 
 const App = connect<AppProps, AppDispatch, {}, any>(
   state => ({
-    counter: state.counter
+    counter: state.counter,
   }),
   dispatch => ({
+    decrement: () => dispatch({ type: "DECREMENT" }),
     increment: () => dispatch({ type: "INCREMENT" }),
-    decrement: () => dispatch({ type: "DECREMENT" })
-  })
+  }),
 )(AppInternal);
 
 export { App };

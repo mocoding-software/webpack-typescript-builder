@@ -15,6 +15,7 @@
     "wtb": "ts-node src/cli",
     "wtb:config": "ts-node src/cli config ./examples/basic",
     "wtb:build": "ts-node src/cli build ./examples/basic",
+    "wtb:build-prod": "ts-node src/cli build ./examples/basic -p",
     "wtb:serve": "ts-node src/cli serve ./examples/basic",
     "wtb:build-redux": "ts-node src/cli build ./examples/redux",
     "wtb:serve-redux": "ts-node src/cli serve ./examples/redux"
@@ -52,7 +53,7 @@
     "@types/react-redux": "^7.1.5",
     "@types/redux": "^3.6.0",
     "@types/redux-logger": "^3.0.7",
-    "@types/webpack": "^4.41.0",    
+    "@types/webpack": "^4.41.0",
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-env": "^1.14.1",
     "@types/webpack-manifest-plugin": "^2.1.0",
@@ -85,10 +86,16 @@
     "tslint-react": "4.1.0",
     "typescript": "3.7.3",
     "url-loader": "3.0.0",
-    "webpack": "4.41.2",    
+    "webpack": "4.41.2",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-hot-server-middleware": "^0.6.0",
     "webpack-manifest-plugin": "^2.2.0"
+  },
+  "devDependencies": {
+    "prettier": "^1.19.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.0.1",
+    "typescript-tslint-plugin": "^0.5.5"
   }
 }

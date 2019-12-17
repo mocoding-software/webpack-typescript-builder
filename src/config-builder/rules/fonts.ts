@@ -8,9 +8,9 @@ function createFontsRule(emitFile: boolean = true): webpack.Rule {
       options: {
         emitFile,
         limit: 4096,
-        name: "fonts/[name].[contenthash:6].[ext]"
-      }
-    }
+        name: "fonts/[name].[contenthash:6].[ext]",
+      },
+    },
   };
 }
 

@@ -1,31 +1,33 @@
 import * as webpack from "webpack";
 import { serverRules } from "./rules";
-import plugins from "./plugins";
 
 export function createServerConfig(
   entry: webpack.Entry,
   outputPath: string,
-  isProduction: boolean
+  isProduction: boolean,
 ): webpack.Configuration {
-  var newPlugins = [...plugins, new webpack.NoEmitOnErrorsPlugin()];
   return {
-    name: "server",
     devtool: "source-map",
     entry,
     mode: isProduction ? "production" : "development",
     module: { rules: serverRules },
+    name: "server",
+    optimization: {
+      minimize: false,
+      namedChunks: true,
+      namedModules: true,
+    },
     output: {
-      filename: "[name].js",      
+      filename: "[name].js",
       libraryTarget: "commonjs2",
       path: outputPath,
-      publicPath: "/"
+      publicPath: "/",
     },
-    plugins: newPlugins,
     resolve: {
+      alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],
-      alias: {}
     },
-    stats: true,
+    stats: false,
     target: "node",
   };
 }

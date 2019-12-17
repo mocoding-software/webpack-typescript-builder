@@ -1,15 +1,15 @@
 import * as React from "react";
 
 export interface HtmlProps {
-  assets: string[];  
+  assets: string[];
   markup: string;
   context: any;
   settings?: any;
 }
 
 export class Html extends React.Component<HtmlProps> {
-  public render(): JSX.Element {    
-    const { markup, assets } = this.props;    
+  public render(): JSX.Element {
+    const { markup, assets } = this.props;
 
     const renderStyles = assets
       .filter(_ => _.endsWith(".css"))
@@ -31,7 +31,7 @@ export class Html extends React.Component<HtmlProps> {
           dangerouslySetInnerHTML={{ __html: inlineScript }}
           charSet="utf-8"
         />
-      )
+      ),
     );
 
     const helmet = this.props.context.helmetContext.helmet;
@@ -57,12 +57,12 @@ export class Html extends React.Component<HtmlProps> {
   }
 
   private getInlineScripts(): string[] {
-    var scripts: string[] = [];
+    let scripts: string[] = [];
 
-    var defaultInlineScript = "";
+    let defaultInlineScript = "";
     if (this.props.settings) {
       defaultInlineScript += `window.__SETTINGS__=${JSON.stringify(
-        this.props.settings
+        this.props.settings,
       )};\n`;
     }
 
@@ -70,12 +70,13 @@ export class Html extends React.Component<HtmlProps> {
 
     if (reduxState) {
       defaultInlineScript += `window.__PRELOADED_STATE__=${JSON.stringify(
-        JSON.stringify(reduxState)
+        JSON.stringify(reduxState),
       )};\n`;
     }
 
-    if (defaultInlineScript.length > 0)
+    if (defaultInlineScript.length > 0) {
       scripts = [defaultInlineScript, ...scripts];
+    }
 
     return scripts;
   }
