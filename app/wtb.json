@@ -1,7 +1,6 @@
 {
   "outputClientPath": "./wwwroot",
-  "outputServerPath": "./wwwroot_node",
-  "enableHelmet": true,
+  "outputServerPath": "./wwwroot_node",  
   "enableRedux": false,  
   "serverSideRendering": true
 }

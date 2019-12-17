@@ -3,6 +3,6 @@ import { WrapperProps } from "../common";
 
 export default class WrapperNoop extends React.Component<WrapperProps> {
     public render(): React.ReactNode {    
-      return <div>{this.props.children}</div>;
+      return React.Children.only(this.props.children)
     }
   }

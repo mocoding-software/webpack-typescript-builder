@@ -1,25 +1,27 @@
 import * as React from "react";
 
 export interface HtmlProps {
-  styles?: string[];
-  scripts?: string[];
-  inlineScripts?: string[];
+  assets: string[];  
   markup: string;
   context: any;
   settings?: any;
 }
 
 export class Html extends React.Component<HtmlProps> {
-  public render(): JSX.Element {
-    const { markup, styles, scripts } = this.props;
+  public render(): JSX.Element {    
+    const { markup, assets } = this.props;    
 
-    const renderStyles = this.getOrEmpty(styles).map((styleRef, i) => (
-      <link key={i} rel="stylesheet" type="text/css" href={styleRef} />
-    ));
+    const renderStyles = assets
+      .filter(_ => _.endsWith(".css"))
+      .map((styleRef, i) => (
+        <link key={i} rel="stylesheet" type="text/css" href={styleRef} />
+      ));
 
-    const renderScripts = this.getOrEmpty(scripts).map((scriptSrc, i) => (
-      <script src={scriptSrc} key={i} charSet="utf-8" />
-    ));
+    const renderScripts = assets
+      .filter(_ => _.endsWith(".js"))
+      .map((scriptSrc, i) => (
+        <script src={scriptSrc} key={i} charSet="utf-8" />
+      ));
 
     const renderInlineScripts = this.getInlineScripts().map(
       (inlineScript, i) => (
@@ -54,12 +56,8 @@ export class Html extends React.Component<HtmlProps> {
     );
   }
 
-  private getOrEmpty<T>(array?: T[]): T[] {
-    return array || [];
-  }
-
   private getInlineScripts(): string[] {
-    var scripts = this.props.inlineScripts || [];
+    var scripts: string[] = [];
 
     var defaultInlineScript = "";
     if (this.props.settings) {

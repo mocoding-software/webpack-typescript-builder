@@ -35,7 +35,8 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const outputPath = path.join(projectRoot, settings.outputClientPath);
   const outputPathServer = path.join(projectRoot, settings.outputServerPath);
   const clientEntryPoint = path.join(libAppRoot, "client.tsx");
-  const serverEntryPoint = path.join(libAppRoot, "server.tsx");
+  const serverEntryPoint = path.join(libAppRoot, "server.ts");
+  const ssrEntryPoint = path.join(libAppRoot, "ssr");
 
   const client: webpack.Entry = {
     index: [
@@ -46,7 +47,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   };
 
   const server: webpack.Entry = {
-    server: [serverEntryPoint]
+    server: [serverEntryPoint],    
   };
 
   var clientConfig = createWebConfig(client, outputPath, false);
@@ -63,8 +64,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const reduxWrapper = "./wrapper-redux"
   const noopWrapper = "./wrapper-noop"
 
-  inject(configs, "injected-app-module", appRoot);
-  inject(configs, "injected-helmet-wrapper", settings.enableHelmet ? helmetWrapper : noopWrapper);
+  inject(configs, "injected-app-module", appRoot);  
   inject(configs, "injected-redux-wrapper", settings.enableRedux ? reduxWrapper : noopWrapper);
 
   return configs;

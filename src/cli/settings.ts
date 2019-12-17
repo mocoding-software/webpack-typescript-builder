@@ -1,7 +1,6 @@
 export interface Settings {
   outputClientPath: string;
-  outputServerPath: string;
-  enableHelmet: boolean;
+  outputServerPath: string;  
   enableRedux: boolean;
   serverSideRendering: boolean;
 }

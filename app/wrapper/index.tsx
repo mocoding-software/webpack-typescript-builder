@@ -1,8 +1,7 @@
 import * as React from "react";
 import { WrapperProps } from "../common";
 
-// @ts-ignore
-import HelmetWrapper from "injected-helmet-wrapper";
+import HelmetWrapper from "./wrapper-helmet";
 // @ts-ignore
 import ReduxWrapper from "injected-redux-wrapper";
 
