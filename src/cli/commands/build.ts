@@ -7,7 +7,7 @@ function build(dir: string) {
 
     let compiler = webpack(config);    
     compiler.run((err, stats: any) => {
-        console.log(stats.stats[0].compilation);        
+        //console.log(stats.stats[0].compilation);        
     });
 }
 

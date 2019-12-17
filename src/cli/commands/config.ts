@@ -4,6 +4,8 @@ import { createWebConfig, createServerConfig } from "../../config-builder"
 import * as path from "path";
 import * as fs from "fs";
 import { Settings } from "../settings";
+import ManifestPlugin from "webpack-manifest-plugin";
+
 
 export function createConfigs(dir: string): webpack.Configuration[] {
   // Defaults:
@@ -22,10 +24,10 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const defaultSettingsLocation = path.join(libAppRoot, settingsFileName);
   const customSettingsLocation = path.join(appRoot, settingsFileName);
 
-  const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsLocation, 'utf8'));  
-  const settings: Settings = fs.existsSync(customSettingsLocation) 
-    ? {...defaultSettings, ...(JSON.parse(fs.readFileSync(customSettingsLocation, 'utf8')))} 
-    : defaultSettings;    
+  const defaultSettings = JSON.parse(fs.readFileSync(defaultSettingsLocation, 'utf8'));
+  const settings: Settings = fs.existsSync(customSettingsLocation)
+    ? { ...defaultSettings, ...(JSON.parse(fs.readFileSync(customSettingsLocation, 'utf8'))) }
+    : defaultSettings;
 
   // outputPath - build directory
   // outputPathServer - build directory
@@ -47,8 +49,14 @@ export function createConfigs(dir: string): webpack.Configuration[] {
     server: [serverEntryPoint]
   };
 
-  var clientConfig = createWebConfig(client, outputPath, false); 
+  var clientConfig = createWebConfig(client, outputPath, false);
   var serverConfig = createServerConfig(server, outputPathServer, false);
+  
+  clientConfig.plugins.push(new ManifestPlugin({
+    fileName: path.join(outputPathServer, "manifest.json"),
+    filter: _ => _.isChunk
+  }));
+
   var configs = [clientConfig, serverConfig];
 
   const helmetWrapper = "./wrapper-helmet"
@@ -58,12 +66,12 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   inject(configs, "injected-app-module", appRoot);
   inject(configs, "injected-helmet-wrapper", settings.enableHelmet ? helmetWrapper : noopWrapper);
   inject(configs, "injected-redux-wrapper", settings.enableRedux ? reduxWrapper : noopWrapper);
-  
+
   return configs;
 }
 
 function inject(configs: webpack.Configuration[], module: string, alias: string) {
-  for (const config of configs){    
+  for (const config of configs) {
     config.resolve.alias[module] = alias;
   }
 }

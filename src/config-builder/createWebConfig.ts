@@ -10,7 +10,7 @@ export function createWebConfig(
   var newPlugins = [
     ...plugins,
     new webpack.HotModuleReplacementPlugin({ quiet: true }),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),    
   ];
   return {
     name: "client",
