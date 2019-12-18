@@ -5,20 +5,22 @@
     "noImplicitAny": true,
     "moduleResolution": "node",
     "declaration": true,
-    "outDir": "dist",
+    "outDir": "lib",
     "removeComments": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "jsx": "react",
     "experimentalDecorators": true,
+    "baseUrl": "./src",
     "plugins": [
       {
         "name": "typescript-tslint-plugin",
-        "alwaysShowRuleFailuresAsWarnings": false,        
+        "alwaysShowRuleFailuresAsWarnings": false,
         "configFile": "tslint.json",
         "suppressWhileTypeErrorsPresent": false
       }
     ]
   },
-  "exclude": ["node_modules", "examples", "src/legacy"]
+  "exclude": ["node_modules", "examples", "src/legacy"],
+  "include": ["src/index.ts"]
 }
