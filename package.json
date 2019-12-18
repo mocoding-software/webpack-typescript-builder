@@ -54,6 +54,7 @@
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-env": "^1.14.1",
     "@types/webpack-manifest-plugin": "^2.1.0",
+    "chalk": "^3.0.0",
     "commander": "^4.0.1",
     "css-loader": "^3.3.2",
     "express": "^4.17.1",
