@@ -1,0 +1,12 @@
+trigger:  
+  branches:
+    include:
+      - vnext
+
+pool:
+  vmImage: "ubuntu-18.04"
+
+container: node:12.13.1-alpine3.10
+
+steps:
+  - script: printenv
