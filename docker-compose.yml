@@ -2,9 +2,7 @@ version: "3"
 
 services:
   devbox:
-    image: devbox
+    image: node:12.13.1-alpine3.10
     command: /bin/sh
-    volumes:
-      - ~/.ssh:/tmp/.ssh:ro
     ports:
       - 3000:3000
