@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import program from "commander";
+import * as path from "path";
 import webpack from "webpack";
 import { createConfigs } from "./config";
-import * as path from "path";
 
 interface MultiStats {
   stats: webpack.Stats[];
