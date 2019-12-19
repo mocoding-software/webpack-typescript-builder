@@ -4,9 +4,10 @@ trigger:
       - vnext
 
 pool:
-  vmImage: "ubuntu-16.04"
-
-container: node:12.13.1-alpine3.10
+  vmImage: "ubuntu-18.04"
 
 steps:
-  - script: printenv
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
+    displayName: "Yarn"
+    inputs:
+      ProjectDirectory: "."
