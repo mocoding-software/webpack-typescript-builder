@@ -16,6 +16,8 @@ steps:
   inputs:
     arguments: 'build'
 - task: Yarn@3
-  displayName: "Pack"
+  condition: 
   inputs:
-    arguments: 'pack'
+    arguments: 'publish --new-version $(Build.BuildNumber)'
+    customRegistry: 'useFeed'
+    customFeed: 'e1336e71-3540-4a0c-830c-639112685b07'
