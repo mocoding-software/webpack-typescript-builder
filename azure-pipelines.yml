@@ -7,7 +7,15 @@ pool:
   vmImage: "ubuntu-18.04"
 
 steps:
-  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-task.Yarn@2
-    displayName: "Yarn"
-    inputs:
-      ProjectDirectory: "."
+- task: Yarn@3
+  displayName: "Install"
+  inputs:
+    ProjectDirectory: "."
+- task: Yarn@3
+  displayName: "Build"
+  inputs:
+    arguments: 'build'
+- task: Yarn@3
+  displayName: "Pack"
+  inputs:
+    arguments: 'pack'
