@@ -19,9 +19,9 @@ function render(App: React.ComponentType) {
 
 render(AppModule.App);
 
-// if (module.hot) {
-//   module.hot.accept(["injected-app-module"], () => {
-//     const { App } = require<typeof AppModule>("injected-app-module");
-//     render(App);
-//   });
-// }
+if (module.hot) {
+  module.hot.accept(["injected-app-module"], () => {
+    const { App } = require<typeof AppModule>("injected-app-module");
+    render(App);
+  });
+}
