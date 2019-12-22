@@ -1,6 +1,6 @@
 {
   "name": "webpack-typescript-builder",
-  "version": "4.0.0-rc2",
+  "version": "0.0.0",
   "description": "Webpack config builder for typescript, styles (css and sass), fonts and images.",
   "typings": "lib/config-builder/index.d.js",
   "main": "lib/config-builder/index.js",
