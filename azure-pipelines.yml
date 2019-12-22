@@ -35,11 +35,11 @@ stages:
             displayName: "Pack"
             condition:
             inputs:
-              arguments: "pack --filename $(Build.StagingDirectory)/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+              arguments: "pack --filename $(Build.StagingDirectory)/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
           - task: PublishBuildArtifacts@1
             displayName: "Publish Artifact: tgz"
             inputs:
-              PathtoPublish: "$(Build.StagingDirectory)/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+              PathtoPublish: "$(Build.StagingDirectory)/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
               ArtifactName: npm
   - stage: Private
     dependsOn: Build
@@ -57,7 +57,7 @@ stages:
                   displayName: "Publish to Dev-Builds"
                   inputs:
                     command: "custom"
-                    customCommand: "publish $(Pipeline.Workspace)/npm/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+                    customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
                     customRegistry: "useFeed"
                     customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
   # - stage: Public
