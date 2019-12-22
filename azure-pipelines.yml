@@ -16,7 +16,7 @@ steps:
   - task: Yarn@3
     displayName: "Update package.json version"
     inputs:
-      arguments: "version --new-version $(Build.BuildNumber)"
+      arguments: "version --new-version $(Build.BuildNumber) --no-git-tag-version"
   - task: Yarn@3
     displayName: "Install"
     inputs:
