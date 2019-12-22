@@ -3,50 +3,90 @@ trigger:
     include:
       - vnext
 
-pool:
-  vmImage: "ubuntu-18.04"
-
-steps:
-  - task: UseGitVersion@5
-    displayName: "Git Version"
-    inputs:
-      versionSpec: "5.0.0"
-      useConfigFile: true
-      configFilePath: "GitVersion.yml"
-  - task: Yarn@3
-    displayName: "Update package.json version"
-    inputs:
-      arguments: "version --new-version $(Build.BuildNumber) --no-git-tag-version"
-  - task: Yarn@3
-    displayName: "Install"
-    inputs:
-      ProjectDirectory: "."
-  - task: Yarn@3
-    displayName: "Build"
-    inputs:
-      arguments: "build"
-  - task: Yarn@3
-    condition:
-    inputs:
-      arguments: "pack --filename $(Build.StagingDirectory)/package.tgz"
-  - task: Npm@1
-    inputs:
-      command: 'custom'
-      customCommand: 'publish $(Build.StagingDirectory)/package.tgz'
-      customRegistry: 'useFeed'
-      customFeed: 'da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07'
-  # - task: PublishBuildArtifacts@1
-  #   displayName: "Publish Artifact: tgz"
-  #   inputs:
-  #     PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
-  #     ArtifactName: npm
-  # - task: Npm@1
-  #   inputs:
-  #     command: 'publish'
-  #     publishRegistry: 'useFeed'
-  #     publishFeed: 'da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07'
-  # - task: Yarn@3
-  #   inputs:
-  #     arguments: 'publish $(Build.StagingDirectory)/package.tgz'
-  #     customRegistry: 'useFeed'
-  #     customFeed: 'da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07'
+stages:
+  - stage: Build
+    variables:
+      WebProjectName: "GetMvp.Web"
+    condition: not(variables['DeployOnly'])
+    jobs:
+      - job: Build
+        pool:
+          vmImage: "ubuntu-18.04"
+        steps:
+          - task: UseGitVersion@5
+            displayName: "Git Version"
+            inputs:
+              versionSpec: "5.0.0"
+              useConfigFile: true
+              configFilePath: "GitVersion.yml"
+          - task: Yarn@3
+            displayName: "Update package.json version"
+            inputs:
+              arguments: "version --new-version $(Build.BuildNumber) --no-git-tag-version"
+          - task: Yarn@3
+            displayName: "Install"
+            inputs:
+              ProjectDirectory: "."
+          - task: Yarn@3
+            displayName: "Build"
+            inputs:
+              arguments: "build"
+          - task: Yarn@3
+            displayName: "Pack"
+            condition:
+            inputs:
+              arguments: "pack --filename $(Build.StagingDirectory)/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish Artifact: tgz"
+            inputs:
+              PathtoPublish: "$(Build.StagingDirectory)/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+              ArtifactName: npm
+  - stage: Private
+    dependsOn: Build
+    condition: succeeded()
+    jobs:
+      - deployment: Deploy
+        pool:
+          vmImage: "ubuntu-18.04"
+        environment: "dev-builds"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Npm@1
+                  displayName: "Publish to Dev-Builds"
+                  inputs:
+                    command: "custom"
+                    customCommand: "publish $(Pipeline.Workspace)/npm/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+                    customRegistry: "useFeed"
+                    customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
+  # - stage: Public
+  #   dependsOn: Build
+  #   condition: succeeded()
+  #   jobs:
+  #     - deployment: Deploy
+  #       pool:
+  #         vmImage: "ubuntu-18.04"
+  #       environment: "public"
+  #       strategy:
+  #         runOnce:
+  #           deploy:
+  #             steps:
+  #               - task: Npm@1
+  #                 displayName: "Publish"
+  #                 inputs:
+  #                   command: "custom"
+  #                   customCommand: "publish $(Pipeline.Workspace)/npm/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
+  #                   customRegistry: "useFeed"
+  #                   customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
+  #               - task: GitHubRelease@1           
+  #                 displayName: 'Update GitHub release'               
+  #                 inputs:               
+  #                   gitHubConnection: 'Mocoding GItHub'
+  #                   repositoryName: 'mocoding-software/webpack-typescript-builder'                   
+  #                   action: edit                    
+  #                   tag: 'v$(Build.BuildNumber)'                     
+  #                   assets: '$(Pipeline.Workspace)/npm/{Build.DefinitionName}-{Build.BuilderNumber}.tgz'                     
+  #                   assetUploadMode: replace
+                      
+                      
