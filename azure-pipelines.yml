@@ -26,4 +26,4 @@ steps:
   inputs:
     arguments: 'publish --new-version $(Build.BuildNumber)'
     customRegistry: 'useFeed'
-    customFeed: 'e1336e71-3540-4a0c-830c-639112685b07'
+    customFeed: 'dev-builds'
