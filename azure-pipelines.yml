@@ -30,7 +30,7 @@ steps:
   inputs:
     arguments: 'pack --filename $(Build.StagingDirectory)/package.tgz'
 - task: PublishBuildArtifacts@1
-    displayName: "Publish Artifact: tgz"
-    inputs:
-      PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
-      ArtifactName: npm
+  displayName: "Publish Artifact: tgz"
+  inputs:
+    PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
+    ArtifactName: npm
