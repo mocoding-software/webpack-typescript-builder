@@ -29,8 +29,13 @@ steps:
     condition:
     inputs:
       arguments: "pack --filename $(Build.StagingDirectory)/package.tgz"
-  - task: PublishBuildArtifacts@1
-    displayName: "Publish Artifact: tgz"
+  # - task: PublishBuildArtifacts@1
+  #   displayName: "Publish Artifact: tgz"
+  #   inputs:
+  #     PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
+  #     ArtifactName: npm
+  - task: Npm@1
     inputs:
-      PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
-      ArtifactName: npm
+      command: 'publish'
+      publishRegistry: 'useFeed'
+      publishFeed: 'da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07'
