@@ -1,17 +1,21 @@
 trigger:
   branches:
     include:
+      - master
       - vnext
+  tags:
+    include:
+      - v*
 
 stages:
   - stage: Build
     variables:
       WebProjectName: "GetMvp.Web"
     condition: not(variables['DeployOnly'])
+    pool:
+      vmImage: "ubuntu-18.04"
     jobs:
       - job: Build
-        pool:
-          vmImage: "ubuntu-18.04"
         steps:
           - task: UseGitVersion@5
             displayName: "Git Version"
@@ -41,52 +45,50 @@ stages:
             inputs:
               PathtoPublish: "$(Build.StagingDirectory)/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
               ArtifactName: npm
-  - stage: Private
+  - stage: DevelopmentFeed
     dependsOn: Build
-    condition: succeeded()
+    condition: and(succeeded(), contains(variables['Build.Reason'], 'PullRequest'))
+    pool:
+      vmImage: "ubuntu-18.04"
     jobs:
       - deployment: Deploy
-        pool:
-          vmImage: "ubuntu-18.04"
         environment: "dev-builds"
         strategy:
           runOnce:
             deploy:
               steps:
                 - task: Npm@1
-                  displayName: "Publish to Dev-Builds"
+                  displayName: "Publish to npm (dev-builds)"
                   inputs:
                     command: "custom"
                     customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
                     customRegistry: "useFeed"
                     customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
-  # - stage: Public
-  #   dependsOn: Build
-  #   condition: succeeded()
-  #   jobs:
-  #     - deployment: Deploy
-  #       pool:
-  #         vmImage: "ubuntu-18.04"
-  #       environment: "public"
-  #       strategy:
-  #         runOnce:
-  #           deploy:
-  #             steps:
-  #               - task: Npm@1
-  #                 displayName: "Publish"
-  #                 inputs:
-  #                   command: "custom"
-  #                   customCommand: "publish $(Pipeline.Workspace)/npm/{Build.DefinitionName}-{Build.BuilderNumber}.tgz"
-  #                   customRegistry: "useFeed"
-  #                   customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
-  #               - task: GitHubRelease@1           
-  #                 displayName: 'Update GitHub release'               
-  #                 inputs:               
-  #                   gitHubConnection: 'Mocoding GItHub'
-  #                   repositoryName: 'mocoding-software/webpack-typescript-builder'                   
-  #                   action: edit                    
-  #                   tag: 'v$(Build.BuildNumber)'                     
-  #                   assets: '$(Pipeline.Workspace)/npm/{Build.DefinitionName}-{Build.BuilderNumber}.tgz'                     
-  #                   assetUploadMode: replace
-                      
-                      
+  - stage: PublicFeed
+    dependsOn: Build
+    condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'tags/v'))
+    pool:
+      vmImage: "ubuntu-18.04"
+    jobs:
+      - deployment: Deploy
+        environment: "public"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Npm@1
+                  displayName: "Publish"
+                  inputs:
+                    command: "custom"
+                    customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
+                    customRegistry: "useFeed"
+                    customEndpoint: 'public-npm'
+                - task: GitHubRelease@1
+                  displayName: 'Update GitHub release'
+                  inputs:
+                    gitHubConnection: 'mocoding-software'
+                    repositoryName: 'mocoding-software/webpack-typescript-builder'
+                    action: edit
+                    tag: 'v$(Build.BuildNumber)'
+                    assets: '$(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz'
+                    assetUploadMode: replace
