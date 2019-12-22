@@ -9,9 +9,6 @@ trigger:
 
 stages:
   - stage: Build
-    variables:
-      WebProjectName: "GetMvp.Web"
-    condition: not(variables['DeployOnly'])
     pool:
       vmImage: "ubuntu-18.04"
     jobs:
