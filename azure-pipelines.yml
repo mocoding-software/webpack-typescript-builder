@@ -12,7 +12,7 @@ stages:
     pool:
       vmImage: "ubuntu-18.04"
     jobs:
-      - job: Build
+      - job: Package
         steps:
           - task: UseGitVersion@5
             displayName: "Git Version"
@@ -42,13 +42,13 @@ stages:
             inputs:
               PathtoPublish: "$(Build.StagingDirectory)/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
               ArtifactName: npm
-  - stage: DevelopmentFeed
+  - stage: Deploy
     dependsOn: Build
     condition: and(succeeded(), contains(variables['Build.Reason'], 'PullRequest'))
     pool:
       vmImage: "ubuntu-18.04"
     jobs:
-      - deployment: Deploy
+      - deployment: DevBuild
         environment: "dev-builds"
         strategy:
           runOnce:
@@ -61,13 +61,13 @@ stages:
                     customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
                     customRegistry: "useFeed"
                     customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
-  - stage: PublicFeed
+  - stage: Release
     dependsOn: Build
     condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'tags/v'))
     pool:
       vmImage: "ubuntu-18.04"
     jobs:
-      - deployment: Deploy
+      - deployment: Public
         environment: "public"
         strategy:
           runOnce:
