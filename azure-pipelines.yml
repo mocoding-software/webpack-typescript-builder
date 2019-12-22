@@ -10,8 +10,9 @@ steps:
 - task: UseGitVersion@5
   displayName: "Version"
   inputs:
-    versionSpec: '4.0.0'
+    versionSpec: '5.0.0'
     useConfigFile: true
+    configFilePath: 'GitVersion.yml'
 - task: Yarn@3
   displayName: "Install"
   inputs:
