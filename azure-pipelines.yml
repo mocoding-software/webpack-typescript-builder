@@ -1,4 +1,4 @@
-trigger:  
+trigger:
   branches:
     include:
       - vnext
@@ -7,30 +7,30 @@ pool:
   vmImage: "ubuntu-18.04"
 
 steps:
-- task: UseGitVersion@5
-  displayName: "Git Version"
-  inputs:
-    versionSpec: '5.0.0'
-    useConfigFile: true
-    configFilePath: 'GitVersion.yml'
-- task: Yarn@3
+  - task: UseGitVersion@5
+    displayName: "Git Version"
+    inputs:
+      versionSpec: "5.0.0"
+      useConfigFile: true
+      configFilePath: "GitVersion.yml"
+  - task: Yarn@3
     displayName: "Update package.json version"
     inputs:
-      arguments: 'version --new-version $(Build.BuildNumber)'
-- task: Yarn@3
-  displayName: "Install"
-  inputs:
-    ProjectDirectory: "."
-- task: Yarn@3
-  displayName: "Build"
-  inputs:
-    arguments: 'build'
-- task: Yarn@3
-  condition: 
-  inputs:
-    arguments: 'pack --filename $(Build.StagingDirectory)/package.tgz'
-- task: PublishBuildArtifacts@1
-  displayName: "Publish Artifact: tgz"
-  inputs:
-    PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
-    ArtifactName: npm
+      arguments: "version --new-version $(Build.BuildNumber)"
+  - task: Yarn@3
+    displayName: "Install"
+    inputs:
+      ProjectDirectory: "."
+  - task: Yarn@3
+    displayName: "Build"
+    inputs:
+      arguments: "build"
+  - task: Yarn@3
+    condition:
+    inputs:
+      arguments: "pack --filename $(Build.StagingDirectory)/package.tgz"
+  - task: PublishBuildArtifacts@1
+    displayName: "Publish Artifact: tgz"
+    inputs:
+      PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
+      ArtifactName: npm
