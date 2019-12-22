@@ -8,11 +8,15 @@ pool:
 
 steps:
 - task: UseGitVersion@5
-  displayName: "Version"
+  displayName: "Git Version"
   inputs:
     versionSpec: '5.0.0'
     useConfigFile: true
     configFilePath: 'GitVersion.yml'
+- task: Yarn@3
+    displayName: "Update package.json version"
+    inputs:
+      arguments: 'version --new-version $(Build.BuildNumber)'
 - task: Yarn@3
   displayName: "Install"
   inputs:
@@ -24,6 +28,9 @@ steps:
 - task: Yarn@3
   condition: 
   inputs:
-    arguments: 'publish --new-version $(Build.BuildNumber)'
-    customRegistry: 'useFeed'
-    customFeed: 'dev-builds'
+    arguments: 'pack --filename $(Build.StagingDirectory)/package.tgz'
+- task: PublishBuildArtifacts@1
+    displayName: "Publish Artifact: tgz"
+    inputs:
+      PathtoPublish: "$(Build.StagingDirectory)/package.tgz"
+      ArtifactName: npm
