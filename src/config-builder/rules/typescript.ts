@@ -1,6 +1,5 @@
 import * as webpack from "webpack";
 export const typescript: webpack.Rule = {
-  include: __dirname,
   test: /\.(ts|tsx)?$/,
-  use: { loader: "ts-loader" },
+  use: { loader: "ts-loader", options: {onlyCompileBundledFiles: true, allowTsInNodeModules: true} },
 };
