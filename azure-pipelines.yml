@@ -77,7 +77,6 @@ stages:
                   inputs:
                     command: "custom"
                     customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
-                    customRegistry: "useFeed"
                     customEndpoint: 'public-npm'
                 - task: GitHubRelease@1
                   displayName: 'Update GitHub release'
