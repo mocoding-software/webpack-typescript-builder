@@ -1,6 +1,7 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import * as webpack from "webpack";
 import { clientRules } from "./rules";
+import { Without } from "./without";
 
 export function createWebConfig(
   entry: webpack.Entry,
@@ -11,6 +12,7 @@ export function createWebConfig(
     new MiniCssExtractPlugin({
       filename: isProd ? "[name].[contenthash:6].css" : "[name].css",
     }),
+    new Without([/styles\.js?$/]),
   ];
 
   if (!isProd) {
@@ -24,8 +26,6 @@ export function createWebConfig(
     module: { rules: clientRules(isProd) },
     name: "client",
     optimization: {
-      minimize: false,
-      namedModules: true,
       noEmitOnErrors: true,
       splitChunks: {
         cacheGroups: {

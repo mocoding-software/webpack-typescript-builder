@@ -10,6 +10,8 @@ function serve(dir: string) {
   const config = createConfigs(dir);
   const compiler = webpack(config);
   const app = express();
+  const port = process.env.PORT || 3000;
+  process.stdout.write("Starting the development server.\n");
 
   app.use(devMiddleware(compiler, { serverSideRender: true }));
 
@@ -17,8 +19,7 @@ function serve(dir: string) {
 
   app.use(hotServerMiddleware(compiler, { chunkName: "server" }));
 
-  // tslint:disable-next-line: no-console
-  app.listen(3000, () => console.log("Listening on port 3000!"));
+  app.listen(port, () => process.stdout.write(`Listening on port ${port}\n`));
 }
 
 program.command("serve <dir>").action(serve);
