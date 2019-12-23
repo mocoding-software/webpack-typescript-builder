@@ -1,4 +1,5 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import * as webpack from "webpack";
 import { clientRules } from "./rules";
 import { Without } from "./without";
@@ -17,6 +18,16 @@ export function createWebConfig(
 
   if (!isProd) {
     plugins.push(new webpack.HotModuleReplacementPlugin({ quiet: true }));
+  } else {
+    plugins.push(
+      new OptimizeCssAssetsPlugin({
+        assetNameRegExp: /\.css$/g,
+        cssProcessor: require("cssnano"),
+        cssProcessorOptions: {
+          preset: ["default", { discardComments: { removeAll: true } }],
+        },
+      }),
+    );
   }
 
   return {
