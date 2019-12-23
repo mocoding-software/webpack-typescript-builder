@@ -5,6 +5,7 @@ import { createConfigs } from "./config";
 const devMiddleware = require("webpack-dev-middleware");
 const hotMiddleware = require("webpack-hot-middleware");
 const hotServerMiddleware = require("webpack-hot-server-middleware");
+import { printResults } from "../printResults";
 
 function serve(dir: string) {
   const config = createConfigs(dir);
@@ -13,13 +14,29 @@ function serve(dir: string) {
   const port = process.env.PORT || 3000;
   process.stdout.write("Starting the development server.\n");
 
-  app.use(devMiddleware(compiler, { serverSideRender: true }));
+  const devMiddlewareInstance = devMiddleware(compiler, {
+    reporter,
+    serverSideRender: true,
+  });
+
+  app.use(devMiddlewareInstance);
 
   app.use(hotMiddleware(compiler.compilers.find(_ => _.name === "client")));
 
   app.use(hotServerMiddleware(compiler, { chunkName: "server" }));
 
-  app.listen(port, () => process.stdout.write(`Listening on port ${port}\n`));
+  app.listen(port, () =>
+    devMiddlewareInstance.waitUntilValid(() => {
+      process.stdout.write(`Listening on port ${port}\n`);
+    }),
+  );
+}
+let outputAssets = true;
+function reporter(middlewareOptions: any, options: any) {
+  if (options.state) {
+    printResults(null, options.stats, outputAssets);
+    outputAssets = false;
+  }
 }
 
 program.command("serve <dir>").action(serve);

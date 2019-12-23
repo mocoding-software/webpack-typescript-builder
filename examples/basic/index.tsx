@@ -11,7 +11,7 @@ export class App extends React.Component {
         <Helmet>
           <title>Home Page</title>
         </Helmet>
-        Hello World!
+        Hello World
         <img src={img} alt="test-image" />
       </div>
     );
