@@ -12,7 +12,7 @@ export function createWebConfig(
     new MiniCssExtractPlugin({
       filename: isProd ? "[name].[contenthash:6].css" : "[name].css",
     }),
-    new Without([/styles\.js?$/]),
+    new Without([/styles\.[0-9a-z]+\.js/]),
   ];
 
   if (!isProd) {
