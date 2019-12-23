@@ -1,5 +1,6 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 import * as webpack from "webpack";
 import { clientRules } from "./rules";
 import { Without } from "./without";
@@ -37,6 +38,15 @@ export function createWebConfig(
     module: { rules: clientRules(isProd) },
     name: "client",
     optimization: {
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            output: {
+              comments: false,
+            },
+          },
+        }),
+      ],
       noEmitOnErrors: true,
       splitChunks: {
         cacheGroups: {
