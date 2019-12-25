@@ -38,8 +38,8 @@ export function createConfigs(dir: string): webpack.Configuration[] {
 
   const outputPath = path.join(projectRoot, settings.outputClientPath);
   const outputPathServer = path.join(projectRoot, settings.outputServerPath);
-  const clientEntryPoint = path.join(libAppRoot, "client.tsx");
-  const serverEntryPoint = path.join(libAppRoot, "server.ts");
+  const clientEntryPoint = path.join(libAppRoot, "client");
+  const serverEntryPoint = path.join(libAppRoot, "server");
   const ssrEntryPoint = path.join(libAppRoot, "ssr");
 
   const devEntries = program.production
@@ -70,14 +70,14 @@ export function createConfigs(dir: string): webpack.Configuration[] {
 
   const configs = [clientConfig, serverConfig];
 
-  const reduxWrapper = "./wrapper-redux";
-  const noopWrapper = "./wrapper-noop";
+  const reduxModule = "./flavors/router-redux";
+  const basicModule = "./flavors/basic";
 
   inject(configs, "injected-app-module", appRoot);
   inject(
     configs,
-    "injected-redux-wrapper",
-    settings.enableRedux ? reduxWrapper : noopWrapper,
+    "injected-flavor-module",
+    settings.enableRouterRedux ? reduxModule : basicModule,
   );
 
   return configs;

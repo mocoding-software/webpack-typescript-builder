@@ -14,7 +14,7 @@ export type RenderFunc = (
   props: RenderFuncProps,
 ) => void;
 
-export type RenderCallback = (error: any, result?: RenderResult) => void;
+export type RenderCallback = (error?: Error, result?: RenderResult) => void;
 
 export interface RenderHtmlResult {
   html: string;

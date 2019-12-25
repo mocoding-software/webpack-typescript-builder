@@ -1,8 +1,9 @@
 export interface Context {
-  helmetContext: any;
-  store: any;
+  helmetContext?: any;
+  store?: any;
+  history?: any;
 }
 
-export interface WrapperProps {
+export interface AppProps {
   context: Context;
 }

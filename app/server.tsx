@@ -1,3 +1,5 @@
+import * as React from "react";
+import * as ReactDom from "react-dom/server";
 import * as Webpack from "webpack";
 import {
   RedirectResult,
@@ -19,7 +21,9 @@ function serverRenderer(stats: ServerRenderStats) {
       const assetsUrls: string[] = [].concat.apply([], Object.values(assets));
       const callback: RenderCallback = (error, result) => {
         if (error) {
-          res.status(500).write(error);
+          res
+            .status(500)
+            .write(ReactDom.renderToStaticMarkup(renderError(error)));
         } else if (result) {
           const htmlResult = result as RenderHtmlResult;
           if (htmlResult.html) {
@@ -40,5 +44,18 @@ function serverRenderer(stats: ServerRenderStats) {
     }
   };
 }
+
+const renderError = (error: Error) => {
+  return (
+    <html>
+      <head>
+        <title>Error</title>
+      </head>
+      <body>
+        <pre>{error.stack}</pre>
+      </body>
+    </html>
+  );
+};
 
 export default serverRenderer;

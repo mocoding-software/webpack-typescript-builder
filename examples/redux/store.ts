@@ -1,6 +1,8 @@
+import { RouterState } from "connected-react-router";
 import * as Redux from "redux";
 
 interface ApplicationState {
+  router?: RouterState;
   counter: number;
 }
 
@@ -17,7 +19,7 @@ const counterReducer = (state = 1, action: Redux.Action) => {
 
 const middlewares: Redux.Middleware[] = [];
 const reducers: Redux.ReducersMapObject<ApplicationState> = {
-  counter: counterReducer
+  counter: counterReducer,
 };
 
-export { middlewares, reducers }
+export { middlewares, reducers };

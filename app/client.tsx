@@ -1,27 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { Context } from "./common";
 
 // @ts-ignore
-import * as AppModule from "injected-app-module";
-import { Wrapper } from "./wrapper";
+import * as AppModule from "injected-flavor-module";
 
-const context: any = {};
+const context: Context = AppModule.createContext();
+const element = document.getElementById("app");
 
-function render(App: React.ComponentType) {
-  const element = document.getElementById("app");
-  ReactDOM.hydrate(
-    <Wrapper context={context}>
-      <App />
-    </Wrapper>,
-    element,
-  );
-}
-
-render(AppModule.App);
+ReactDOM.hydrate(<AppModule.App context={context} />, element);
 
 if (module.hot) {
-  module.hot.accept(["injected-app-module"], () => {
-    const { App } = require<typeof AppModule>("injected-app-module");
-    render(App);
+  module.hot.accept(["injected-flavor-module"], () => {
+    const newModule = require<typeof AppModule>("injected-flavor-module");
+    ReactDOM.hydrate(<newModule.App context={context} />, element);
   });
 }
