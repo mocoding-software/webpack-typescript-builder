@@ -3,7 +3,6 @@ import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 import * as webpack from "webpack";
 import { clientRules } from "./rules";
-import { Without } from "./without";
 
 export function createWebConfig(
   entry: webpack.Entry,
@@ -14,7 +13,6 @@ export function createWebConfig(
     new MiniCssExtractPlugin({
       filename: isProd ? "[name].[contenthash:6].css" : "[name].css",
     }),
-    new Without([/styles\.[0-9a-z]+\.js/]),
   ];
 
   if (!isProd) {
