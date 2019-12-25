@@ -1,8 +1,17 @@
+export interface RenderFuncProps {
+  requestUrl: string;
+  assets: string[];
+  inlineScripts?: InlineScript[];
+}
+
+export interface InlineScript {
+  position: "top" | "bottom";
+  script: string;
+}
+
 export type RenderFunc = (
   callback: RenderCallback,
-  requestUrl: string,
-  assets: string[],
-  settings?: any,
+  props: RenderFuncProps,
 ) => void;
 
 export type RenderCallback = (error: any, result?: RenderResult) => void;

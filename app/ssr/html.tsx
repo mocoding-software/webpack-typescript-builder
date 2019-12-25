@@ -1,10 +1,12 @@
 import * as React from "react";
+import { Context } from "../common/context";
+import { InlineScript } from "../common/renderFunc";
 
 export interface HtmlProps {
   assets: string[];
   markup: string;
-  context: any;
-  settings?: any;
+  context: Context;
+  inlineScripts?: InlineScript[];
 }
 
 export class Html extends React.Component<HtmlProps> {
@@ -23,16 +25,27 @@ export class Html extends React.Component<HtmlProps> {
         <script src={scriptSrc} key={i} charSet="utf-8" />
       ));
 
-    const renderInlineScripts = this.getInlineScripts().map(
-      (inlineScript, i) => (
+    const inlineScripts = this.getInlineScripts();
+    const renderTopInlineScripts = inlineScripts
+      .filter(_ => _.position === "top")
+      .map((inlineScript, i) => (
         <script
           key={i}
           type="text/javascript"
-          dangerouslySetInnerHTML={{ __html: inlineScript }}
+          dangerouslySetInnerHTML={{ __html: inlineScript.script }}
           charSet="utf-8"
         />
-      ),
-    );
+      ));
+    const renderBottomInlineScripts = inlineScripts
+      .filter(_ => _.position === "top")
+      .map((inlineScript, i) => (
+        <script
+          key={i}
+          type="text/javascript"
+          dangerouslySetInnerHTML={{ __html: inlineScript.script }}
+          charSet="utf-8"
+        />
+      ));
 
     const helmet = this.props.context.helmetContext.helmet;
 
@@ -45,37 +58,30 @@ export class Html extends React.Component<HtmlProps> {
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}
           {helmet.link.toComponent()}
+          {renderTopInlineScripts}
           {renderStyles}
         </head>
         <body {...bodyAttrs}>
           <main id="app" dangerouslySetInnerHTML={{ __html: markup }} />
-          {renderInlineScripts}
+          {renderBottomInlineScripts}
           {renderScripts}
         </body>
       </html>
     );
   }
 
-  private getInlineScripts(): string[] {
-    let scripts: string[] = [];
-
-    let defaultInlineScript = "";
-    if (this.props.settings) {
-      defaultInlineScript += `window.__SETTINGS__=${JSON.stringify(
-        this.props.settings,
-      )};\n`;
-    }
+  private getInlineScripts(): InlineScript[] {
+    const scripts: InlineScript[] = this.props.inlineScripts || [];
 
     const reduxState = this.props.context.store?.getState();
 
     if (reduxState) {
-      defaultInlineScript += `window.__PRELOADED_STATE__=${JSON.stringify(
-        JSON.stringify(reduxState),
-      )};\n`;
-    }
-
-    if (defaultInlineScript.length > 0) {
-      scripts = [defaultInlineScript, ...scripts];
+      scripts.push({
+        position: "bottom",
+        script: `window.__PRELOADED_STATE__=${JSON.stringify(
+          JSON.stringify(reduxState),
+        )};\n`,
+      });
     }
 
     return scripts;

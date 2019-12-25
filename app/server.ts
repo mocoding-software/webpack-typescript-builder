@@ -1,5 +1,10 @@
 import * as Webpack from "webpack";
-import { RedirectResult, RenderCallback, RenderHtmlResult } from "./common";
+import {
+  RedirectResult,
+  RenderCallback,
+  RenderFuncProps,
+  RenderHtmlResult,
+} from "./common";
 import render from "./ssr";
 
 interface ServerRenderStats {
@@ -25,7 +30,11 @@ function serverRenderer(stats: ServerRenderStats) {
           }
         }
       };
-      render(callback, req.url, assetsUrls);
+      const props: RenderFuncProps = {
+        assets: assetsUrls,
+        requestUrl: req.url,
+      };
+      render(callback, props);
     } else {
       res.status(404).send();
     }

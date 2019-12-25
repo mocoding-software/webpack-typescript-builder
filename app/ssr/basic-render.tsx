@@ -1,16 +1,15 @@
 import * as React from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
-import { Html, HtmlProps, RenderCallback } from "../common";
+import { RenderCallback, RenderFuncProps } from "../common";
 import { Wrapper } from "../wrapper";
+import { Html, HtmlProps } from "./html";
 
 // @ts-ignore
 import * as AppModule from "injected-app-module";
 
 export default function render(
   callback: RenderCallback,
-  requestUrl: string,
-  assets: string[],
-  settings?: any,
+  props: RenderFuncProps,
 ): void {
   try {
     const context: any = {
@@ -24,10 +23,10 @@ export default function render(
     const markup = renderToString(app);
 
     const htmlProps: HtmlProps = {
-      assets,
+      assets: props.assets,
       context,
+      inlineScripts: props.inlineScripts,
       markup,
-      settings,
     };
 
     const html = renderToStaticMarkup(<Html {...htmlProps} />);
