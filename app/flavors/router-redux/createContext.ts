@@ -9,9 +9,9 @@ import { Context } from "../../common";
 import { middlewares, reducers } from "injected-app-module/store";
 
 export function createContext(abstractHistory?: History): Context {
-  const isSsr = typeof window === "undefined";
   const initialState =
-    typeof isSsr || typeof (window as any).__PRELOADED_STATE__ === "undefined"
+    typeof window === "undefined" ||
+    typeof (window as any).__PRELOADED_STATE__ === "undefined"
       ? undefined
       : JSON.parse((window as any)?.__PRELOADED_STATE__);
   const history = abstractHistory ?? createBrowserHistory();

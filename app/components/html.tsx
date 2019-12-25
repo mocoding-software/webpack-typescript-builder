@@ -37,7 +37,7 @@ export class Html extends React.Component<HtmlProps> {
         />
       ));
     const renderBottomInlineScripts = inlineScripts
-      .filter(_ => _.position === "top")
+      .filter(_ => _.position === "bottom")
       .map((inlineScript, i) => (
         <script
           key={i}

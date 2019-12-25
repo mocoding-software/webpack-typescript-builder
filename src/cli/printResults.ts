@@ -38,6 +38,15 @@ function printWarnings(stats: webpack.Stats): number {
   const issues: any = stats.compilation.warnings;
   let warningCount = 0;
   for (const issue of issues) {
+    if (!issue.warning) {
+      // Disable webpack compain here.
+      // process.stdout.write(chalk.red(issue.error.toString()));
+      // process.stdout.write("\n");
+      // process.stdout.write(chalk.bold.cyan(issue.module.resource));
+      // process.stdout.write("\n");
+      // warningCount++;
+      continue;
+    }
     const allWarnings: string = issue.warning.toString();
     const warnings = allWarnings
       .replace("Error: ", chalk.grey(""))

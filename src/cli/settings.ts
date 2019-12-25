@@ -1,6 +1,5 @@
 export interface Settings {
-  outputClientPath: string;
-  outputServerPath: string;
-  enableRouterRedux: boolean;
-  serverSideRendering: boolean;
+  outputClientPath?: string;
+  outputServerPath?: string;
+  flavor: "basic" | "router-redux" | "router-redux-async";
 }

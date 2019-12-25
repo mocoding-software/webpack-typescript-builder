@@ -1,6 +1,5 @@
 {
   "outputClientPath": "./wwwroot",
   "outputServerPath": "./wwwroot_node",  
-  "enableRouterRedux": false,  
-  "serverSideRendering": true
+  "flavor": "basic"
 }

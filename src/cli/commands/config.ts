@@ -70,15 +70,27 @@ export function createConfigs(dir: string): webpack.Configuration[] {
 
   const configs = [clientConfig, serverConfig];
 
+  // inject flavors
+  const reduxAsyncModule = "./flavors/router-redux-async";
   const reduxModule = "./flavors/router-redux";
   const basicModule = "./flavors/basic";
 
+  let flavorModule: string;
+
+  switch (settings.flavor) {
+    case "router-redux":
+      flavorModule = reduxModule;
+      break;
+    case "router-redux-async":
+      flavorModule = reduxAsyncModule;
+      break;
+    default:
+      flavorModule = basicModule;
+      break;
+  }
+
   inject(configs, "injected-app-module", appRoot);
-  inject(
-    configs,
-    "injected-flavor-module",
-    settings.enableRouterRedux ? reduxModule : basicModule,
-  );
+  inject(configs, "injected-flavor-module", flavorModule);
 
   return configs;
 }
