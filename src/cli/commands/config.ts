@@ -23,6 +23,12 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const defaultSettingsLocation = path.join(libAppRoot, settingsFileName);
   const customSettingsLocation = path.join(appRoot, settingsFileName);
 
+  const defaultTsConfigLocation = path.join(libRoot, "tsconfig.base.json");
+  const appTsConfigLocation = path.join(appRoot, "tsconfig.json");
+  const tsConfigLocation = fs.existsSync(appTsConfigLocation)
+    ? appTsConfigLocation
+    : defaultTsConfigLocation;
+
   const defaultSettings = JSON.parse(
     fs.readFileSync(defaultSettingsLocation, "utf8"),
   );
@@ -54,8 +60,16 @@ export function createConfigs(dir: string): webpack.Configuration[] {
     server: program.production ? ssrEntryPoint : serverEntryPoint,
   };
 
-  const clientConfig = createWebConfig(client, outputPath, program.production);
+  process.stdout.write(`Using ${tsConfigLocation}\n`);
+
+  const clientConfig = createWebConfig(
+    tsConfigLocation,
+    client,
+    outputPath,
+    program.production,
+  );
   const serverConfig = createServerConfig(
+    tsConfigLocation,
     server,
     outputPathServer,
     program.production,

@@ -3,6 +3,7 @@ import * as webpack from "webpack";
 import { serverRules } from "./rules";
 
 export function createServerConfig(
+  tsConfigLocation: string,
   entry: webpack.Entry,
   outputPath: string,
   isProduction: boolean,
@@ -27,7 +28,7 @@ export function createServerConfig(
     resolve: {
       alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],
-      plugins: [new TsconfigPathsPlugin()],
+      plugins: [new TsconfigPathsPlugin({ configFile: tsConfigLocation })],
     },
     stats: false,
     target: "node",

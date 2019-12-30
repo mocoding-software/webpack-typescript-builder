@@ -6,6 +6,7 @@ import * as webpack from "webpack";
 import { clientRules } from "./rules";
 
 export function createWebConfig(
+  tsConfigLocation: string,
   entry: webpack.Entry,
   outputPath: string,
   isProd: boolean,
@@ -74,7 +75,7 @@ export function createWebConfig(
     resolve: {
       alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],
-      plugins: [new TsconfigPathsPlugin()],
+      plugins: [new TsconfigPathsPlugin({ configFile: tsConfigLocation })],
     },
     stats: true,
   };
