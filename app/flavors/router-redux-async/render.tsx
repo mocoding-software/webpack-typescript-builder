@@ -18,12 +18,18 @@ export function render(callback: RenderCallback, props: RenderFuncProps): void {
     const context: Context = createContext(history);
     context.helmetContext = {}; // init helmet for ssr
     const app = <App context={context} />;
+    let firstError: any = null;
     domainTaskRun(
       () => {
+        domainTaskBaseUrl("http://localhost:5000");
         renderToString(app);
       },
       /* completion callback */ errorOrNothing => {
+        if (firstError) {
+          return;
+        }
         if (errorOrNothing) {
+          firstError = errorOrNothing;
           callback(errorOrNothing);
         } else {
           const markup = renderToString(app);

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { connectRouter } from "connected-react-router";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
@@ -33,11 +35,14 @@ function configureStore(history: History, initialState?: any): any {
   const rootReducers = createRootReducer(history, reducers);
 
   // Adding logger and router to middlewares
-  const pipeline = Redux.applyMiddleware(
-    logger,
-    routerMiddleware(history),
-    ...middlewares,
-  );
+  const defaultMiddlewares: Redux.Middleware = [];
+  const isSsr = typeof window === "undefined";
+  if (!isSsr) {
+    defaultMiddlewares.push(logger);
+  }
+  defaultMiddlewares.push(routerMiddleware(history));
+
+  const pipeline = Redux.applyMiddleware(...defaultMiddlewares, ...middlewares);
 
   // create store
   const store = Redux.createStore(

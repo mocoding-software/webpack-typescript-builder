@@ -42,7 +42,9 @@
   },
   "files": [
     "lib",
-    "app"
+    "app",
+    "typings",
+    "tsconfig.base.json"
   ],
   "homepage": "https://github.com/mocoding-software/webpack-typescript-builder#readme",
   "author": "MOCODING, LLC",
@@ -74,9 +76,11 @@
     "terser-webpack-plugin": "^2.3.1",
     "ts-loader": "6.2.1",
     "ts-node": "^8.5.4",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslint": "5.20.1",
     "tslint-loader": "^3.5.4",
     "typescript": "^3.7.3",
+    "typescript-tslint-plugin": "^0.5.5",
     "url-loader": "^3.0.0",
     "webpack": "4.41.2",
     "webpack-dev-middleware": "^3.7.2",
@@ -135,7 +139,6 @@
     "redux-thunk": "^2.3.0",
     "tslint-config-prettier": "^1.18.0",
     "tslint-plugin-prettier": "^2.0.1",
-    "tslint-react": "^4.1.0",
-    "typescript-tslint-plugin": "^0.5.5"
+    "tslint-react": "^4.1.0"
   }
 }

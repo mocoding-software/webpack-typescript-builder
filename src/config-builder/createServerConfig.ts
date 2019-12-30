@@ -1,3 +1,4 @@
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
 import { serverRules } from "./rules";
 
@@ -26,6 +27,7 @@ export function createServerConfig(
     resolve: {
       alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],
+      plugins: [new TsconfigPathsPlugin()],
     },
     stats: false,
     target: "node",

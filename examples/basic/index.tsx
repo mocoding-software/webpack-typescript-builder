@@ -2,7 +2,7 @@ import * as React from "react";
 import { Helmet } from "react-helmet-async";
 import "./index.scss";
 
-const img = require("./image.png").default;
+import img from "./image.png";
 
 export class App extends React.Component {
   public render(): JSX.Element {

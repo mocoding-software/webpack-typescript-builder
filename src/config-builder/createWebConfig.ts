@@ -1,6 +1,7 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import OptimizeCssAssetsPlugin from "optimize-css-assets-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
+import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
 import { clientRules } from "./rules";
 
@@ -73,6 +74,7 @@ export function createWebConfig(
     resolve: {
       alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],
+      plugins: [new TsconfigPathsPlugin()],
     },
     stats: true,
   };

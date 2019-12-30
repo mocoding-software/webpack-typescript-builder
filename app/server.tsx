@@ -21,9 +21,7 @@ function serverRenderer(stats: ServerRenderStats) {
       const assetsUrls: string[] = [].concat.apply([], Object.values(assets));
       const callback: RenderCallback = (error, result) => {
         if (error) {
-          res
-            .status(500)
-            .write(ReactDom.renderToStaticMarkup(renderError(error)));
+          return next(error);
         } else if (result) {
           const htmlResult = result as RenderHtmlResult;
           if (htmlResult.html) {

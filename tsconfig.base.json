@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "commonjs",
+    "experimentalDecorators": true,
+    "allowJs": false,
+    "target": "es5",
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true, 
+    "jsx": "react",
+    "lib": ["es6", "dom"],
+    "typeRoots": [
+      "./node_module/@types",
+      "webpack-typescript-builder/typings/images"
+    ]
+  },
+  "plugins": [
+    {
+      "name": "typescript-tslint-plugin",
+      "alwaysShowRuleFailuresAsWarnings": false,
+      "configFile": "tslint.json",
+      "suppressWhileTypeErrorsPresent": false
+    }
+  ]  
+}
