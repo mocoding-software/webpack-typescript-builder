@@ -70,10 +70,20 @@ function printFiles(stats: webpack.Stats, name: string) {
   const out = stats.compilation.outputOptions.path;
   const target = stats.compilation.outputOptions.libraryTarget;
   process.stdout.write(`${name} (${target}):\n`);
-  for (const chunk of stats.compilation.chunks) {
-    for (const file of chunk.files) {
-      process.stdout.write(`  ${chalk.green.italic(path.join(out, file))}\n`);
-    }
+  const assets = Object.keys(stats.compilation.assets).filter(
+    _ => !_.endsWith("d.ts"),
+  );
+  for (const asset of assets) {
+    const webpackAsset: any = stats.compilation.assets[asset];
+    const size: number = webpackAsset.size
+      ? webpackAsset.size()
+      : webpackAsset.children
+      ? webpackAsset.children[0]._value.length
+      : webpackAsset._value.length;
+    const strSize = (size / 1024).toFixed(2);
+    process.stdout.write(
+      `  ${chalk.green.italic(path.join(out, asset))} (${strSize} Kb)\n`,
+    );
   }
   process.stdout.write("\n");
 }

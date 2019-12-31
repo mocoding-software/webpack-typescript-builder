@@ -1,8 +1,7 @@
 import * as React from "react";
 import { Helmet } from "react-helmet-async";
+import { Component } from "./component";
 import "./index.scss";
-
-import img from "./image.png";
 
 export class App extends React.Component {
   public render(): JSX.Element {
@@ -12,7 +11,7 @@ export class App extends React.Component {
           <title>Home Page</title>
         </Helmet>
         Hello World
-        <img src={img} alt="test-image" />
+        <Component />
       </div>
     );
   }

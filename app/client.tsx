@@ -10,10 +10,3 @@ const context: Context = AppModule.createContext();
 const element = document.getElementById("app");
 
 ReactDOM.hydrate(<AppModule.App context={context} />, element);
-
-if (module.hot) {
-  module.hot.accept(["injected-flavor-module"], () => {
-    const newModule = require<typeof AppModule>("injected-flavor-module");
-    ReactDOM.hydrate(<newModule.App context={context} />, element);
-  });
-}

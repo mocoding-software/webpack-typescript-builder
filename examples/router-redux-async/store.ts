@@ -1,6 +1,5 @@
 import { RouterState } from "connected-react-router";
-import { addTask } from "domain-task";
-import fetch = require("isomorphic-fetch");
+import { addTask, fetch } from "domain-task";
 import * as Redux from "redux";
 import thunk from "redux-thunk";
 
@@ -36,10 +35,10 @@ export function fetchStarsAction() {
         .then(data =>
           setTimeout(() => {
             dispatch({
-              stars: data.stargazers_count,
+              stats: data.stargazers_count,
               type: "LOAD_STARS",
-            }),
-              resolve();
+            });
+            resolve();
           }, 2000),
         ),
     );

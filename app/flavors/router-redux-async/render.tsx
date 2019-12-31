@@ -18,12 +18,16 @@ export function render(callback: RenderCallback, props: RenderFuncProps): void {
     context.helmetContext = {}; // init helmet for ssr
     const app = <App context={context} />;
     let firstError: any = null;
+    const timeoutTimer = setTimeout(() => {
+      callback(new Error("Cannot complete prerendering withing 5 second"));
+    }, 5000);
     domainTaskRun(
       () => {
         domainTaskBaseUrl("http://localhost:5000");
         renderToString(app);
       },
       /* completion callback */ errorOrNothing => {
+        clearTimeout(timeoutTimer);
         if (firstError) {
           return;
         }

@@ -10,10 +10,12 @@
     "strict": true,
     "strictNullChecks": true,
     "esModuleInterop": true, 
+    "incremental": true,
+    "baseUrl": ".",
     "jsx": "react",
     "lib": ["es6", "dom"],
     "typeRoots": [
-      "./node_module/@types",
+      "@types",
       "webpack-typescript-builder/typings/images"
     ]
   },

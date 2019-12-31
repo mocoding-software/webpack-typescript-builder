@@ -15,8 +15,9 @@ function serve(dir: string) {
   process.stdout.write("Starting the development server.\n");
 
   const devMiddlewareInstance = devMiddleware(compiler, {
-    reporter,
     serverSideRender: true,
+    stats: false,
+    writeToDisk: true,
   });
 
   app.use(devMiddlewareInstance);
@@ -30,13 +31,6 @@ function serve(dir: string) {
       process.stdout.write(`Listening on port ${port}\n`);
     }),
   );
-}
-let outputAssets = true;
-function reporter(middlewareOptions: any, options: any) {
-  if (options.state) {
-    printResults(null, options.stats, outputAssets);
-    outputAssets = false;
-  }
 }
 
 program.command("serve <dir>").action(serve);

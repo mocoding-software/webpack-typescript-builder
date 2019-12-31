@@ -32,7 +32,7 @@ export function createWebConfig(
   }
 
   return {
-    devtool: isProd ? undefined : "source-map",
+    devtool: isProd ? undefined : "cheap-module-eval-source-map",
     entry,
     mode: isProd ? "production" : "development",
     module: { rules: clientRules(isProd) },
@@ -69,6 +69,7 @@ export function createWebConfig(
       library: "[name]",
       libraryTarget: "umd",
       path: outputPath,
+      pathinfo: false,
       publicPath: "/",
     },
     plugins,

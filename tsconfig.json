@@ -11,6 +11,7 @@
     "esModuleInterop": true,
     "jsx": "react",
     "experimentalDecorators": true,
+    "incremental": true,
     "baseUrl": ".",
     "typeRoots": [
       "./node_module/@types",

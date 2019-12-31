@@ -3,6 +3,11 @@ export const typescript: webpack.Rule = {
   test: /\.(ts|tsx)?$/,
   use: {
     loader: "ts-loader",
-    options: { onlyCompileBundledFiles: true, allowTsInNodeModules: true },
+    options: {
+      allowTsInNodeModules: true,
+      experimentalWatchApi: true,
+      onlyCompileBundledFiles: true,
+      transpileOnly: true,
+    },
   },
 };

@@ -24,7 +24,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const customSettingsLocation = path.join(appRoot, settingsFileName);
 
   const defaultTsConfigLocation = path.join(libRoot, "tsconfig.base.json");
-  const appTsConfigLocation = path.join(appRoot, "tsconfig.json");
+  const appTsConfigLocation = path.join(projectRoot, "tsconfig.json");
   const tsConfigLocation = fs.existsSync(appTsConfigLocation)
     ? appTsConfigLocation
     : defaultTsConfigLocation;
@@ -47,6 +47,10 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const clientEntryPoint = path.join(libAppRoot, "client");
   const serverEntryPoint = path.join(libAppRoot, "server");
   const ssrEntryPoint = path.join(libAppRoot, "ssr");
+  const appEntry = path.join(
+    libAppRoot,
+    `entry/index.${program.production ? "prod" : "dev"}.ts`,
+  );
 
   const devEntries = program.production
     ? []
@@ -103,6 +107,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
       break;
   }
 
+  inject(configs, "injected-app-entry", appEntry);
   inject(configs, "injected-app-module", appRoot);
   inject(configs, "injected-flavor-module", flavorModule);
 

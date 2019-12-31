@@ -1,3 +1,4 @@
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import TsconfigPathsPlugin from "tsconfig-paths-webpack-plugin";
 import * as webpack from "webpack";
 import { serverRules } from "./rules";
@@ -9,7 +10,7 @@ export function createServerConfig(
   isProduction: boolean,
 ): webpack.Configuration {
   return {
-    devtool: "source-map",
+    devtool: isProduction ? "source-map" : "cheap-module-eval-source-map",
     entry,
     mode: isProduction ? "production" : "development",
     module: { rules: serverRules },
@@ -23,8 +24,15 @@ export function createServerConfig(
       filename: "[name].js",
       libraryTarget: "commonjs2",
       path: outputPath,
+      pathinfo: false,
       publicPath: "/",
     },
+    plugins: [
+      new ForkTsCheckerWebpackPlugin({
+        tsconfig: tsConfigLocation,
+        tslint: true,
+      }),
+    ],
     resolve: {
       alias: {},
       extensions: [".js", ".jsx", ".ts", ".tsx"],

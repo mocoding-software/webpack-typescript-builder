@@ -1,5 +1,3 @@
-import * as React from "react";
-import * as ReactDom from "react-dom/server";
 import * as Webpack from "webpack";
 import {
   RedirectResult,
@@ -15,6 +13,7 @@ interface ServerRenderStats {
 
 function serverRenderer(stats: ServerRenderStats) {
   return (req: any, res: any, next: any) => {
+    process.stdout.write(`Request ${req.url}\n`);
     if (req.url === "/") {
       const assets = res.locals.webpackStats.stats[0].toJson()
         .assetsByChunkName;
@@ -42,18 +41,5 @@ function serverRenderer(stats: ServerRenderStats) {
     }
   };
 }
-
-const renderError = (error: Error) => {
-  return (
-    <html>
-      <head>
-        <title>Error</title>
-      </head>
-      <body>
-        <pre>{error.stack}</pre>
-      </body>
-    </html>
-  );
-};
 
 export default serverRenderer;
