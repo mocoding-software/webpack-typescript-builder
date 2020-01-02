@@ -16,7 +16,7 @@ function serve(dir: string) {
 
   const devMiddlewareInstance = devMiddleware(compiler, {
     serverSideRender: true,
-    stats: true,
+    stats: program.debug === true,
     writeToDisk: true,
   });
 

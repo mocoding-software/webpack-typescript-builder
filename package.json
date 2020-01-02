@@ -23,7 +23,8 @@
     "wtb:build-redux-async": "ts-node src/cli build ./examples/router-redux-async",
     "wtb:serve-redux-async": "ts-node src/cli serve ./examples/router-redux-async",
     "wtb:build-ssr": "ts-node src/cli build ./examples/ssr",
-    "wtb:serve-ssr": "ts-node src/cli serve ./examples/ssr"
+    "wtb:serve-ssr": "ts-node src/cli serve ./examples/ssr",
+    "wtb:build-extend": "ts-node src/cli build ./examples/extend-config"
   },
   "keywords": [
     "webpack",
@@ -61,7 +62,7 @@
     "@types/webpack": "^4.41.0",
     "@types/webpack-dev-middleware": "^2.0.3",
     "@types/webpack-env": "^1.14.1",
-    "@types/webpack-manifest-plugin": "^2.1.0",
+    "@types/webpack-merge": "4.1.5",
     "chalk": "^3.0.0",
     "commander": "^4.0.1",
     "css-loader": "^3.3.2",
@@ -89,7 +90,7 @@
     "webpack-dev-middleware": "^3.7.2",
     "webpack-hot-middleware": "^2.25.0",
     "webpack-hot-server-middleware": "^0.6.0",
-    "webpack-manifest-plugin": "^2.2.0"
+    "webpack-merge": "4.2.2"
   },
   "peerDependencies": {
     "@types/react-redux": "^7.1.5",

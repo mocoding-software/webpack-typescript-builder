@@ -2,5 +2,6 @@
   "outputClientPath": "./wwwroot",
   "outputServerPath": "./wwwroot_node",  
   "flavor": "basic",
-  "ssrModule": null
+  "ssrModule": null,
+  "extend": null
 }

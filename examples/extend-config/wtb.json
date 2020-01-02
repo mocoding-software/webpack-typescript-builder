@@ -1,0 +1,6 @@
+{
+    "extend": {
+      "serverConfig": "./webpack.server.config.js",
+      "clientConfig": "./webpack.client.config.js"
+    }
+} 

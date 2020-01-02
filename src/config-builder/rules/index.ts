@@ -1,5 +1,6 @@
 import * as webpack from "webpack";
 import { css, noCss } from "./css";
+import { favicon, noFavicon } from "./favicon";
 import { fonts, noFonts } from "./fonts";
 import { images, noImages } from "./images";
 import { noSass, sass, sassGlob } from "./sass";
@@ -16,6 +17,7 @@ export const clientRules: (
   sassGlob,
   fonts,
   images,
+  favicon,
 ];
 export const serverRules = [
   typescript,
@@ -24,4 +26,5 @@ export const serverRules = [
   noSass,
   noFonts,
   noImages,
+  noFavicon,
 ];

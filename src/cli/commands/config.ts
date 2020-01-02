@@ -2,7 +2,7 @@ import program from "commander";
 import * as fs from "fs";
 import * as path from "path";
 import webpack from "webpack";
-import ManifestPlugin from "webpack-manifest-plugin";
+import merge from "webpack-merge";
 import { createServerConfig, createWebConfig } from "../../config-builder";
 import { Settings } from "../settings";
 
@@ -74,25 +74,33 @@ export function createConfigs(dir: string): webpack.Configuration[] {
 
   process.stdout.write(`Using ${tsConfigLocation}\n`);
 
-  const clientConfig = createWebConfig(
+  let clientConfig = createWebConfig(
     tsConfigLocation,
     client,
     outputPath,
     program.production,
   );
-  const serverConfig = createServerConfig(
+
+  let serverConfig = createServerConfig(
     tsConfigLocation,
     server,
     outputPathServer,
     program.production,
   );
 
-  clientConfig.plugins.push(
-    new ManifestPlugin({
-      fileName: path.join(outputPathServer, "manifest.json"),
-      filter: _ => _.isChunk,
-    }),
-  );
+  // Extend configs.
+  if (settings.extend) {
+    if (settings.extend.clientConfig) {
+      const location = path.join(appRoot, settings.extend.clientConfig);
+      const extendClientConfig = require(location) as webpack.Configuration;
+      clientConfig = merge.smart(clientConfig, extendClientConfig);
+    }
+    if (settings.extend.serverConfig) {
+      const location = path.join(appRoot, settings.extend.serverConfig);
+      const extendServerConfig = require(location) as webpack.Configuration;
+      serverConfig = merge.smart(serverConfig, extendServerConfig);
+    }
+  }
 
   const configs = [clientConfig, serverConfig];
 

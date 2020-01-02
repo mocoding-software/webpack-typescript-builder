@@ -6,7 +6,8 @@ import "./commands";
 program
   .version("0.0.1")
   .description("Webpack typescript builder!")
-  .option("-p, --production", "build for production");
+  .option("-p, --production", "build for production")
+  .option("-d, --debug", "enable extra debug options");
 
 program.parse(process.argv);
 

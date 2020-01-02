@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import program from "commander";
 import * as path from "path";
 import webpack from "webpack";
 
