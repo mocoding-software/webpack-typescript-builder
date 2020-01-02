@@ -30,6 +30,11 @@
 	"extensions": [
 		"esbenp.prettier-vscode",
 		"ms-vscode.vscode-typescript-tslint-plugin",
-		"michelemelluso.code-beautifier"
+		"michelemelluso.code-beautifier",
+		"eamodio.gitlens",
+		"donjayamanne.githistory",
+		"christian-kohler.path-intellisense",
+		"rbbit.typescript-hero",		
+		"dskwrk.vscode-generate-getter-setter"
 	]
 }

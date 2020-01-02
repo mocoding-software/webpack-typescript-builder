@@ -23,12 +23,14 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const defaultSettingsLocation = path.join(libAppRoot, settingsFileName);
   const customSettingsLocation = path.join(appRoot, settingsFileName);
 
+  // Find tsconfig.json to be used.
   const defaultTsConfigLocation = path.join(libRoot, "tsconfig.base.json");
   const appTsConfigLocation = path.join(projectRoot, "tsconfig.json");
   const tsConfigLocation = fs.existsSync(appTsConfigLocation)
     ? appTsConfigLocation
     : defaultTsConfigLocation;
 
+  // load wtb.json if present to override default settings
   const defaultSettings = JSON.parse(
     fs.readFileSync(defaultSettingsLocation, "utf8"),
   );
@@ -41,12 +43,18 @@ export function createConfigs(dir: string): webpack.Configuration[] {
 
   // outputPath - build directory
   // outputPathServer - build directory
+  // clientEntryPoint - entry point for client (browser) side
+  // serverEntryPoint - entry point for server side (development only).
+  // ssrEntryPoint - entry point for render function.
 
   const outputPath = path.join(projectRoot, settings.outputClientPath);
   const outputPathServer = path.join(projectRoot, settings.outputServerPath);
   const clientEntryPoint = path.join(libAppRoot, "client");
   const serverEntryPoint = path.join(libAppRoot, "server");
-  const ssrEntryPoint = path.join(libAppRoot, "ssr");
+  const ssrEntryPoint = settings.ssrModule
+    ? path.join(appRoot, settings.ssrModule)
+    : path.join(libAppRoot, "ssr");
+
   const appEntry = path.join(
     libAppRoot,
     `entry/index.${program.production ? "prod" : "dev"}.ts`,
@@ -110,6 +118,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   inject(configs, "injected-app-entry", appEntry);
   inject(configs, "injected-app-module", appRoot);
   inject(configs, "injected-flavor-module", flavorModule);
+  inject(configs, "injected-ssr-module", ssrEntryPoint);
 
   return configs;
 }

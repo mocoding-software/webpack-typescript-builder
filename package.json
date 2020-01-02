@@ -21,7 +21,9 @@
     "wtb:build-redux": "ts-node src/cli build ./examples/router-redux",
     "wtb:serve-redux": "ts-node src/cli serve ./examples/router-redux",
     "wtb:build-redux-async": "ts-node src/cli build ./examples/router-redux-async",
-    "wtb:serve-redux-async": "ts-node src/cli serve ./examples/router-redux-async"
+    "wtb:serve-redux-async": "ts-node src/cli serve ./examples/router-redux-async",
+    "wtb:build-ssr": "ts-node src/cli build ./examples/ssr",
+    "wtb:serve-ssr": "ts-node src/cli serve ./examples/ssr"
   },
   "keywords": [
     "webpack",

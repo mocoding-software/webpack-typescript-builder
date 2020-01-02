@@ -5,7 +5,9 @@ import {
   RenderFuncProps,
   RenderHtmlResult,
 } from "./common";
-import render from "./ssr";
+
+// @ts-ignore
+import render from "injected-ssr-module";
 
 interface ServerRenderStats {
   clientStats: Webpack.Stats;
