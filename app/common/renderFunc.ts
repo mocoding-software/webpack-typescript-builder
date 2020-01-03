@@ -1,7 +1,9 @@
 export interface RenderFuncProps {
   requestUrl: string;
+  baseUrl: string;
   assets: string[];
   inlineScripts?: InlineScript[];
+  timeout?: number;
 }
 
 export interface InlineScript {

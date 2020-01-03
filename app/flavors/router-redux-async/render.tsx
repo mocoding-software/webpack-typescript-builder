@@ -5,6 +5,7 @@ import {
 import { createMemoryHistory } from "history";
 import * as React from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
+import * as url from "url";
 import { Context, RenderCallback, RenderFuncProps } from "../../common";
 import { HelmetHtml, HelmetHtmlProps } from "../../components";
 import { App } from "../router-redux/app";
@@ -12,18 +13,22 @@ import { createContext } from "../router-redux/createContext";
 
 export function render(callback: RenderCallback, props: RenderFuncProps): void {
   try {
+    const location = url.parse(props.requestUrl);
     const history = createMemoryHistory();
-    history.replace(props.requestUrl);
+    history.replace(location);
     const context: Context = createContext(history);
     context.helmetContext = {}; // init helmet for ssr
     const app = <App context={context} />;
     let firstError: any = null;
+    const timeout = props.timeout || 5;
     const timeoutTimer = setTimeout(() => {
-      callback(new Error("Cannot complete prerendering withing 5 second"));
-    }, 5000);
+      callback(
+        new Error(`Cannot complete prerendering withing ${timeout} second`),
+      );
+    }, timeout * 1000);
     domainTaskRun(
       () => {
-        domainTaskBaseUrl("http://localhost:5000");
+        domainTaskBaseUrl(props.baseUrl);
         renderToString(app);
       },
       /* completion callback */ errorOrNothing => {
