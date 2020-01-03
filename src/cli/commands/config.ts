@@ -88,6 +88,18 @@ export function createConfigs(dir: string): webpack.Configuration[] {
     program.production,
   );
 
+  const definePlugin = new webpack.DefinePlugin({
+    "process.env": {
+      API_URL: JSON.stringify(settings.devApiUrl),
+      NODE_ENV: JSON.stringify(
+        program.production ? "production" : "development",
+      ),
+    },
+  });
+
+  clientConfig.plugins.push(definePlugin);
+  serverConfig.plugins.push(definePlugin);
+
   // Extend configs.
   if (settings.extend) {
     if (settings.extend.clientConfig) {

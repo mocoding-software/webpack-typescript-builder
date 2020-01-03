@@ -4,6 +4,7 @@ export interface Settings {
   flavor: "basic" | "router-redux" | "router-redux-async";
   ssrModule?: string;
   extend?: ExtendConfigSettings;
+  devApiUrl: string;
 }
 
 export interface ExtendConfigSettings {

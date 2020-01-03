@@ -18,11 +18,9 @@ function serverRenderer(stats: ServerRenderStats) {
     process.stdout.write(`Request ${req.originalUrl}\n`);
     const assets = res.locals.webpackStats.stats[0].toJson().assetsByChunkName;
     const assetsUrls: string[] = [].concat.apply([], Object.values(assets));
-    const port = process.env.PORT;
-    const baseUrl =
-      "http://localhost" +
-      (typeof port !== "undefined" ? ":5000" : `:${req.socket.localPort}`);
-    console.log(baseUrl);
+    const defaultApiUrl = `${req.protocol}://${req.hostname}`;
+    const apiUrl = process.env.API_URL;
+    const baseUrl = typeof apiUrl !== "undefined" ? apiUrl : defaultApiUrl;
     const callback: RenderCallback = (error, result) => {
       if (error) {
         return next(error);
