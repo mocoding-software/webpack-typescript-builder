@@ -100,6 +100,11 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   clientConfig.plugins.push(definePlugin);
   serverConfig.plugins.push(definePlugin);
 
+  if (!program.production) {
+    clientConfig.resolve.alias["react-dom"] = "@hot-loader/react-dom";
+    serverConfig.resolve.alias["react-dom"] = "@hot-loader/react-dom";
+  }
+
   // Extend configs.
   if (settings.extend) {
     if (settings.extend.clientConfig) {

@@ -53,6 +53,7 @@
   "author": "MOCODING, LLC",
   "license": "MIT",
   "dependencies": {
+    "@hot-loader/react-dom": "16.11.0",
     "@types/express": "^4.17.2",
     "@types/mini-css-extract-plugin": "^0.8.0",
     "@types/optimize-css-assets-webpack-plugin": "^5.0.1",

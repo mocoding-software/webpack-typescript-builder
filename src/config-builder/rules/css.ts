@@ -9,7 +9,7 @@ export const css: (isProduction: boolean) => webpack.Rule = isProduction => ({
     {
       loader: MiniCssExtractPlugin.loader,
       options: {
-        hmr: isProduction,
+        hmr: !isProduction,
       },
     },
     "css-loader",
