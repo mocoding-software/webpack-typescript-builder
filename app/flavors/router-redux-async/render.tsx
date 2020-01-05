@@ -45,7 +45,9 @@ export function render(callback: RenderCallback, props: RenderFuncProps): void {
           markup,
         };
 
-        const html = renderToStaticMarkup(<HelmetHtml {...htmlProps} />);
+        const html =
+          "<!DOCTYPE html>" +
+          renderToStaticMarkup(<HelmetHtml {...htmlProps} />);
 
         callback(undefined, {
           html,

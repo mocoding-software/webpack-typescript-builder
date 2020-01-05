@@ -4,5 +4,6 @@
   "flavor": "basic",
   "ssrModule": null,
   "extend": null,
-  "devApiUrl": "http://localhost:5000"
+  "devApiUrl": "http://localhost:5000",
+  "type": "module"
 }

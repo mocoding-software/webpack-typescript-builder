@@ -95,6 +95,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
       NODE_ENV: JSON.stringify(
         program.production ? "production" : "development",
       ),
+      SCRIPTS_TYPE: JSON.stringify(settings.type),
     },
   });
 

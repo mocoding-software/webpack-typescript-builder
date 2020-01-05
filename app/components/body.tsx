@@ -12,8 +12,10 @@ export class Body extends React.Component<BodyProps> {
   public render() {
     const { scripts, markup, bodyAttrs } = this.props;
 
+    const type = process.env.SCRIPTS_TYPE;
+
     const renderScripts = scripts.map((scriptSrc, i) => (
-      <script src={scriptSrc} key={i} charSet="utf-8" />
+      <script type={type} src={scriptSrc} key={i} charSet="utf-8" />
     ));
 
     const renderInlineScripts = this.getInlineScripts().map((script, i) => (

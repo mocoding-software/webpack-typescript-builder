@@ -5,6 +5,7 @@ export interface Settings {
   ssrModule?: string;
   extend?: ExtendConfigSettings;
   devApiUrl: string;
+  type: string;
 }
 
 export interface ExtendConfigSettings {

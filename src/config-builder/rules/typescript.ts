@@ -1,5 +1,5 @@
+import tsImportPluginFactory from "ts-import-plugin";
 import * as webpack from "webpack";
-const tsImportPluginFactory = require("ts-import-plugin");
 
 export const typescript: webpack.Rule = {
   test: /\.(ts|tsx)?$/,
