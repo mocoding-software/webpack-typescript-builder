@@ -3,13 +3,13 @@ import { AppProps } from "../../common";
 import { HelmetWrapper } from "../../components";
 
 // @ts-ignore
-import InjectedApp from "injected-app-entry";
+import * as InjectedAppModule from "injected-app-entry";
 
 export class App extends React.Component<AppProps> {
   public render(): React.ReactNode {
     return (
       <HelmetWrapper helmetContext={this.props.context.helmetContext}>
-        <InjectedApp />
+        <InjectedAppModule.App />
       </HelmetWrapper>
     );
   }

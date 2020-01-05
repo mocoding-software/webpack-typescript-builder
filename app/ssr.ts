@@ -1,4 +1,4 @@
 // @ts-ignore
-import { render } from "injected-flavor-module";
+import { render } from "injected-flavor-module/render";
 
 export default render;

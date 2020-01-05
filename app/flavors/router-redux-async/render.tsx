@@ -1,7 +1,7 @@
 import {
   baseUrl as domainTaskBaseUrl,
   run as domainTaskRun,
-} from "domain-task/main";
+} from "domain-task";
 import { createMemoryHistory } from "history";
 import * as React from "react";
 import { renderToStaticMarkup, renderToString } from "react-dom/server";
@@ -26,37 +26,36 @@ export function render(callback: RenderCallback, props: RenderFuncProps): void {
         new Error(`Cannot complete prerendering withing ${timeout} second`),
       );
     }, timeout * 1000);
-    domainTaskRun(
-      () => {
-        domainTaskBaseUrl(props.baseUrl);
-        renderToString(app);
-      },
-      /* completion callback */ errorOrNothing => {
-        clearTimeout(timeoutTimer);
-        if (firstError) {
-          return;
-        }
-        if (errorOrNothing) {
-          firstError = errorOrNothing;
-          callback(errorOrNothing);
-        } else {
-          const markup = renderToString(app);
 
-          const htmlProps: HelmetHtmlProps = {
-            assets: props.assets,
-            context,
-            inlineScripts: props.inlineScripts,
-            markup,
-          };
+    const completionCallback = errorOrNothing => {
+      clearTimeout(timeoutTimer);
+      if (firstError) {
+        return;
+      }
+      if (errorOrNothing) {
+        firstError = errorOrNothing;
+        callback(errorOrNothing);
+      } else {
+        const markup = renderToString(app);
 
-          const html = renderToStaticMarkup(<HelmetHtml {...htmlProps} />);
+        const htmlProps: HelmetHtmlProps = {
+          assets: props.assets,
+          context,
+          inlineScripts: props.inlineScripts,
+          markup,
+        };
 
-          callback(undefined, {
-            html,
-          });
-        }
-      },
-    );
+        const html = renderToStaticMarkup(<HelmetHtml {...htmlProps} />);
+
+        callback(undefined, {
+          html,
+        });
+      }
+    };
+    domainTaskRun(() => {
+      domainTaskBaseUrl(props.baseUrl);
+      renderToString(app);
+    }, completionCallback);
   } catch (error) {
     callback(error);
   }

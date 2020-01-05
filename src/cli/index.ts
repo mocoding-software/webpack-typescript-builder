@@ -7,7 +7,8 @@ program
   .version("0.0.1")
   .description("Webpack typescript builder!")
   .option("-p, --production", "build for production")
-  .option("-d, --debug", "enable extra debug options");
+  .option("-d, --debug", "enable extra debug options")
+  .option("-a, --analyze", "enable bundle analyzer");
 
 program.parse(process.argv);
 

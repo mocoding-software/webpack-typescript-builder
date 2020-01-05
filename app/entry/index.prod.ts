@@ -1,3 +1,7 @@
 // @ts-nocheck
 import * as AppModule from "injected-app-module";
-export default AppModule.App;
+
+const App = AppModule.App;
+const devMiddlewares = [];
+
+export { App, devMiddlewares };

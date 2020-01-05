@@ -4,10 +4,10 @@ import { connectRouter } from "connected-react-router";
 import { routerMiddleware } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import * as Redux from "redux";
-import { logger } from "redux-logger";
 import { Context } from "../../common";
 
 // @ts-ignore
+import { devMiddlewares } from "injected-app-entry";
 import { middlewares, reducers } from "injected-app-module/store";
 
 export function createContext(abstractHistory?: History): Context {
@@ -35,11 +35,8 @@ function configureStore(history: History, initialState?: any): any {
   const rootReducers = createRootReducer(history, reducers);
 
   // Adding logger and router to middlewares
-  const defaultMiddlewares: Redux.Middleware = [];
   const isSsr = typeof window === "undefined";
-  if (!isSsr) {
-    defaultMiddlewares.push(logger);
-  }
+  const defaultMiddlewares: Redux.Middleware = !isSsr ? devMiddlewares : [];
   defaultMiddlewares.push(routerMiddleware(history));
 
   const pipeline = Redux.applyMiddleware(...defaultMiddlewares, ...middlewares);

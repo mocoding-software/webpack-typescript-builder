@@ -13,7 +13,6 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   // libAppRoot - root location of the entrypoint app (node_modules/webpack-typescript-builder/app)
   // appRoot - root of the app (exmaple: project/client-app)
   // settingsFileName - name of settings file for webpack-typescript-builder
-
   const projectRoot = process.cwd();
   const libRoot = path.join(__dirname, "../../..");
   const libAppRoot = path.join(libRoot, "app");
@@ -29,6 +28,8 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   const tsConfigLocation = fs.existsSync(appTsConfigLocation)
     ? appTsConfigLocation
     : defaultTsConfigLocation;
+
+  process.stdout.write(`Using ${tsConfigLocation}\n`);
 
   // load wtb.json if present to override default settings
   const defaultSettings = JSON.parse(
@@ -46,7 +47,6 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   // clientEntryPoint - entry point for client (browser) side
   // serverEntryPoint - entry point for server side (development only).
   // ssrEntryPoint - entry point for render function.
-
   const outputPath = path.join(projectRoot, settings.outputClientPath);
   const outputPathServer = path.join(projectRoot, settings.outputServerPath);
   const clientEntryPoint = path.join(libAppRoot, "client");
@@ -55,15 +55,16 @@ export function createConfigs(dir: string): webpack.Configuration[] {
     ? path.join(appRoot, settings.ssrModule)
     : path.join(libAppRoot, "ssr");
 
+  // entry points
   const appEntry = path.join(
     libAppRoot,
     `entry/index.${program.production ? "prod" : "dev"}.ts`,
   );
-
   const devEntries = program.production
     ? []
     : ["webpack-hot-middleware/client", "react-hot-loader/patch"];
 
+  // client & server
   const client: webpack.Entry = {
     index: [...devEntries, clientEntryPoint],
   };
@@ -72,8 +73,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
     server: program.production ? ssrEntryPoint : serverEntryPoint,
   };
 
-  process.stdout.write(`Using ${tsConfigLocation}\n`);
-
+  // Creating configs
   let clientConfig = createWebConfig(
     tsConfigLocation,
     client,
@@ -88,6 +88,7 @@ export function createConfigs(dir: string): webpack.Configuration[] {
     program.production,
   );
 
+  // Adding default plugin
   const definePlugin = new webpack.DefinePlugin({
     "process.env": {
       API_URL: JSON.stringify(settings.devApiUrl),
@@ -100,10 +101,15 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   clientConfig.plugins.push(definePlugin);
   serverConfig.plugins.push(definePlugin);
 
+  // adding aliases
   if (!program.production) {
     clientConfig.resolve.alias["react-dom"] = "@hot-loader/react-dom";
     serverConfig.resolve.alias["react-dom"] = "@hot-loader/react-dom";
   }
+
+  // replace domain task alias to avoid unnecessary dependencies on the client
+  const clientDomainTask = path.join(libAppRoot, "esm/domain-task");
+  clientConfig.resolve.alias["domain-task"] = clientDomainTask;
 
   // Extend configs.
   if (settings.extend) {
