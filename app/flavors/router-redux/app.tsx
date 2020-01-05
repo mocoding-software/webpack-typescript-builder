@@ -5,7 +5,7 @@ import { AppProps } from "../../common";
 import { HelmetWrapper } from "../../components";
 
 // @ts-ignore
-import * as InjectedAppModule from "injected-app-entry";
+import InjectedAppModule from "injected-app-entry";
 
 export class App extends React.Component<AppProps> {
   public render(): React.ReactNode {
@@ -13,7 +13,7 @@ export class App extends React.Component<AppProps> {
       <HelmetWrapper helmetContext={this.props.context.helmetContext}>
         <Provider store={this.props.context.store}>
           <ConnectedRouter history={this.props.context.history}>
-            <InjectedAppModule.App />
+            <InjectedAppModule />
           </ConnectedRouter>
         </Provider>
       </HelmetWrapper>

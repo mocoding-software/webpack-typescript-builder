@@ -7,7 +7,7 @@ import * as Redux from "redux";
 import { Context } from "../../common";
 
 // @ts-ignore
-import { devMiddlewares } from "injected-app-entry";
+import devMiddlewares from "injected-default-middlewares";
 import { middlewares, reducers } from "injected-app-module/store";
 
 export function createContext(abstractHistory?: History): Context {

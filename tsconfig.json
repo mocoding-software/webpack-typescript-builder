@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "target": "es2019",
     "noImplicitAny": true,
     "moduleResolution": "node",
@@ -13,10 +13,7 @@
     "experimentalDecorators": true,
     "incremental": true,
     "baseUrl": ".",
-    "typeRoots": [
-      "./node_module/@types",
-      "./typings"
-    ],   
+    "typeRoots": ["./node_module/@types", "./typings"],
     "plugins": [
       {
         "name": "typescript-tslint-plugin",

@@ -150,6 +150,12 @@ export function createConfigs(dir: string): webpack.Configuration[] {
   inject(configs, "injected-app-module", appRoot);
   inject(configs, "injected-flavor-module", flavorModule);
   inject(configs, "injected-ssr-module", ssrEntryPoint);
+  // inject default middlewares
+  inject(
+    configs,
+    "injected-default-middlewares",
+    program.production ? "./middlewares/prod" : "./middlewares/dev",
+  );
 
   return configs;
 }
