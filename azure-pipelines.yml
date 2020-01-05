@@ -1,0 +1,89 @@
+trigger:
+  branches:
+    include:
+      - master
+  tags:
+    include:
+      - v*
+
+stages:
+  - stage: Build
+    pool:
+      vmImage: "ubuntu-18.04"
+    jobs:
+      - job: Package
+        steps:
+          - task: UseGitVersion@5
+            displayName: "Git Version"
+            inputs:
+              versionSpec: "5.0.0"
+              useConfigFile: true
+              configFilePath: "GitVersion.yml"
+          - task: Yarn@3
+            displayName: "Update package.json version"
+            inputs:
+              arguments: "version --new-version $(Build.BuildNumber) --no-git-tag-version"
+          - task: Yarn@3
+            displayName: "Install"
+            inputs:
+              ProjectDirectory: "."
+          - task: Yarn@3
+            displayName: "Build"
+            inputs:
+              arguments: "build"
+          - task: Yarn@3
+            displayName: "Pack"
+            condition:
+            inputs:
+              arguments: "pack --filename $(Build.StagingDirectory)/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
+          - task: PublishBuildArtifacts@1
+            displayName: "Publish Artifact: tgz"
+            inputs:
+              PathtoPublish: "$(Build.StagingDirectory)/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
+              ArtifactName: npm
+  - stage: Deploy
+    dependsOn: Build
+    condition: and(succeeded(), contains(variables['Build.Reason'], 'PullRequest'))
+    pool:
+      vmImage: "ubuntu-18.04"
+    jobs:
+      - deployment: DevBuild
+        environment: "dev-builds"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Npm@1
+                  displayName: "Publish to npm (dev-builds)"
+                  inputs:
+                    command: "custom"
+                    customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
+                    customRegistry: "useFeed"
+                    customFeed: "da7703d4-fb22-4933-b869-83f4264b7b84/e1336e71-3540-4a0c-830c-639112685b07"
+  - stage: Release
+    dependsOn: Build
+    condition: and(succeeded(), contains(variables['Build.SourceBranch'], 'tags/v'))
+    pool:
+      vmImage: "ubuntu-18.04"
+    jobs:
+      - deployment: Public
+        environment: "public"
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: Npm@1
+                  displayName: "Publish"
+                  inputs:
+                    command: "custom"
+                    customCommand: "publish $(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz"
+                    customEndpoint: 'public-npm'
+                - task: GitHubRelease@1
+                  displayName: 'Update GitHub release'
+                  inputs:
+                    gitHubConnection: 'mocoding-software'
+                    repositoryName: 'mocoding-software/webpack-typescript-builder'
+                    action: edit
+                    tag: 'v$(Build.BuildNumber)'
+                    assets: '$(Pipeline.Workspace)/npm/${Build.DefinitionName}-${Build.BuilderNumber}.tgz'
+                    assetUploadMode: replace

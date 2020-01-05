@@ -1,15 +1,14 @@
-import * as ExtractTextPlugin from "extract-text-webpack-plugin";
 import * as webpack from "webpack";
 import { getDefaultResolveSection } from "./common";
 import { asServerLib, asUmdLib } from "./outputs";
 import { defaultPlugins } from "./plugins";
-import { getDefaultClientRules, getDefaultServerRules, sassGlob } from "./rules";
+import { getDefaultClientRules, getDefaultServerRules, sassGlob } from "../config-builder/rules";
 
 const isProduction = (process.argv.indexOf("-p") !== -1);
 
 export class WebpackConfigBuilder {
     public defaultEntryName: string;
-    constructor(private entry: webpack.Entry, private parallelBuild: boolean = true) {
+    constructor(private entry: webpack.Entry, private parallelBuild: boolean = false) {
 
         const entryKeys = Object.getOwnPropertyNames(entry);
         if (entryKeys.length === 0) {
@@ -27,7 +26,7 @@ export class WebpackConfigBuilder {
             mode: isProduction ? "production" : "development",
             module: { rules: getDefaultClientRules(this.parallelBuild) },
             output: asUmdLib(outputPath),
-            plugins: [...defaultPluginsList, ...plugins, new ExtractTextPlugin(this.defaultEntryName + ".css") as any],
+            plugins: [...defaultPluginsList, ...plugins],
             resolve: getDefaultResolveSection(),
             stats: { modules: false },
         };

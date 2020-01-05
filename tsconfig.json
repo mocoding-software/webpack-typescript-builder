@@ -1,19 +1,28 @@
 {
-	"compilerOptions": {			
-		"module": "commonjs",
-		"target": "es6",
-		"noImplicitAny": true,		
-		"moduleResolution": "node",		
-		"declaration": true,
-		"outDir": "dist",		
-		"removeComments": true,
-		"skipLibCheck": true		
-	},
-	"files": [
-		"src/index.ts"
-	],
-	"exclude": [
-		"node_modules",
-		"examples"
-	]
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2019",
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "lib",
+    "removeComments": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "incremental": true,
+    "baseUrl": ".",
+    "typeRoots": ["./node_module/@types", "./typings"],
+    "plugins": [
+      {
+        "name": "typescript-tslint-plugin",
+        "alwaysShowRuleFailuresAsWarnings": false,
+        "configFile": "tslint.json",
+        "suppressWhileTypeErrorsPresent": false
+      }
+    ]
+  },
+  "exclude": ["node_modules", "examples", "src/legacy"],
+  "include": ["src/index.ts"]
 }

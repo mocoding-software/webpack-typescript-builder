@@ -1,0 +1,44 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [    
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug: Basic Build",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "program": "${workspaceRoot}/src/cli/index.ts",
+      "args": [
+        "build",
+        "./examples/basic"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug: Basic Serve",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "program": "${workspaceRoot}/src/cli/index.ts",
+      "args": [
+        "serve",
+        "./examples/basic"
+      ]
+    }    ,
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug: Async Redux Serve",
+      "cwd": "${workspaceRoot}",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "program": "${workspaceRoot}/src/cli/index.ts",
+      "args": [
+        "serve",
+        "./examples/router-redux-async"
+      ]
+    }
+  ]
+}
